@@ -1,9 +1,16 @@
 import React from "react";
 import { Grid, Typography, Avatar, Button } from "@material-ui/core";
+import parse from "html-react-parser";
 
-const Pricing = () => {
+const Pricing = ({ pricingData, refs }) => {
   return (
-    <>
+    <div
+      style={{ margin: "150px 0" }}
+      ref={(el) => (refs.current["pricing"] = el)}
+    >
+      <Typography variant="h3" align="center">
+        {pricingData.acf.title}
+      </Typography>
       <Grid
         container
         alignItems="center"
@@ -11,8 +18,8 @@ const Pricing = () => {
         spacing={6}
         style={{
           boxShadow: "0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%)",
-          width: "35%",
-          margin: "100px auto",
+          width: "30%",
+          margin: "50px auto",
         }}
       >
         <Grid
@@ -21,43 +28,23 @@ const Pricing = () => {
           style={{ backgroundColor: "#46bae2", color: "white" }}
         >
           <Typography variant="h4" align="center" style={{ color: "white" }}>
-            Séance individuelle ou de couple
+            {pricingData.acf.prestation_name}
           </Typography>
         </Grid>
-        <Grid item xs={12}>
-          <Typography align="center">
-            Durée d'une séance : 50 minutes en moyenne
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography align="center">
-            Le nombre de séances est variable selon les personnes, la nature de
-            leurs difficultés et leurs objectifs
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography align="center">
-            Le tarif d'une consultation est de : 60€
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography align="center">
-            Possibilités d'aménagement tarifaire en fonction de situations
-            particulières
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography align="center">
-            Durée d'une séance : 50 minutes en moyenne
-          </Typography>
-        </Grid>
+        {pricingData.acf.repeteur.map((line, index) => (
+          <Grid item xs={12}>
+            <Typography style={{ color: "#7a7a7a" }} align="center">
+              {parse(line.text)}
+            </Typography>
+          </Grid>
+        ))}
         <Grid item xs={12} style={{ textAlign: "center" }}>
           <Button color="primary" variant="contained">
-            Prendre rdv
+            {pricingData.acf.btn_text}
           </Button>
         </Grid>
       </Grid>
-    </>
+    </div>
   );
 };
 

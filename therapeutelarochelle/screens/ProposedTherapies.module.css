@@ -1,0 +1,18 @@
+.subtitle {
+  color: "#72757";
+}
+
+.therapyButton {
+  border-radius: 3px;
+  padding: 25px 0;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 600px) {
+  .subtitle {
+    margin: 0 25% !important;
+  }
+  .therapyButton {
+    margin: 30px 70px !important;
+  }
+}

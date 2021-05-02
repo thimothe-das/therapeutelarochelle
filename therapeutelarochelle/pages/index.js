@@ -3,7 +3,7 @@ import styles from "../styles/Home.module.css";
 import HeaderBanner from "screens/HeaderBanner";
 import Header from "screens/Header";
 import AboutMe from "screens/AboutMe";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ProposedTherapies from "screens/ProposedTherapies";
 import MyBackground from "screens/MyBackground";
 import Pricing from "screens/Pricing";
@@ -14,30 +14,52 @@ export default function Home({
   headerBannerData,
   aboutData,
   proposedTherapiesData,
+  myBackgroundData,
+  pricingData,
+  contactData,
 }) {
   const [windowHeight, setWindowHeight] = useState(100);
   useEffect(() => {
     setWindowHeight(window.innerHeight);
   }, []);
+  const refs = useRef({
+    aboutMe: null,
+    proposedTherapies: null,
+    myBackground: null,
+    pricing: null,
+    contactMe: null,
+  });
 
   return (
-    <div id="main-wrapper">
-      <Header />
-      <div className="page-wrapper">
-        <div
-          className="container-fluid"
-          style={{ height: windowHeight + "px" }}
-        >
-          <HeaderBanner headerBannerData={headerBannerData[0]} />
+    <>
+      <Head>
+        <title>My page title</title>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
+        />
+      </Head>
+      <div id="main-wrapper">
+        <Header refs={refs} />
+        <div className="page-wrapper">
+          <div
+            className="container-fluid"
+            style={{ height: windowHeight + "px" }}
+          >
+            <HeaderBanner headerBannerData={headerBannerData[0]} />
+          </div>
+          <AboutMe refs={refs} aboutData={aboutData[0]} />
+          <ProposedTherapies
+            refs={refs}
+            proposedTherapiesData={proposedTherapiesData[0]}
+          />
+          <MyBackground refs={refs} myBackgroundData={myBackgroundData[0]} />
+          <Pricing refs={refs} pricingData={pricingData[0]} />
+          <ContactMe refs={refs} contactData={contactData[0]} />
+          <Footer />
         </div>
-        <AboutMe aboutData={aboutData[0]} />
-        <ProposedTherapies proposedTherapiesData={proposedTherapiesData[0]} />
-        <MyBackground />
-        <Pricing />
-        <ContactMe />
-        <Footer />
       </div>
-    </div>
+    </>
   );
 }
 
@@ -52,6 +74,9 @@ export async function getStaticProps() {
   const proposedTherapiesData = data.filter(
     (page) => page.slug === "proposed_therapies"
   );
+  const pricingData = data.filter((page) => page.slug === "pricing");
+  const myBackgroundData = data.filter((page) => page.slug === "mybackground");
+  const contactData = data.filter((page) => page.slug === "contact");
   // By returning { props: { posts } }, the Blog component
   // will receive `posts` as a prop at build time
   return {
@@ -59,6 +84,9 @@ export async function getStaticProps() {
       headerBannerData,
       aboutData,
       proposedTherapiesData,
+      myBackgroundData,
+      pricingData,
+      contactData,
     },
   };
 }

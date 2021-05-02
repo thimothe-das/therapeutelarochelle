@@ -1,11 +1,17 @@
 import { Button, Grid, Typography, Avatar } from "@material-ui/core";
 import React from "react";
 import DirectionsIcon from "@material-ui/icons/Directions";
+import parse from "html-react-parser";
+import styles from "screens/AboutMe.module.css";
 
-const AboutMe = ({ aboutData }) => {
+const AboutMe = ({ aboutData, refs }) => {
   return (
-    <Grid container alignItems="center">
-      <Grid item xs={7} style={{ padding: "86px" }}>
+    <Grid
+      container
+      alignItems="center"
+      ref={(el) => (refs.current["aboutMe"] = el)}
+    >
+      <Grid item xs={12} sm={7} className={styles.textWrapper}>
         <Typography
           style={{ marginBottom: "7px", color: "black" }}
           variant="h3"
@@ -18,17 +24,14 @@ const AboutMe = ({ aboutData }) => {
         >
           {aboutData.acf.subtitle}
         </Typography>
-        <Typography
-          variant="h6"
-          style={{ color: "#727577" }}
-          dangerouslySetInnerHTML={{
-            __html: aboutData.acf.text,
-          }}
-        />
+        <Typography variant="h6" style={{ color: "#727577" }}>
+          {parse(aboutData.acf.text)}
+        </Typography>
       </Grid>
-      <Grid item xs={5}>
+      <Grid item xs={12} sm={5}>
         <Avatar
-          style={{ width: "450px", height: "450px", margin: "0 auto" }}
+          className={styles.avatarImg}
+          classes={{ img: styles.avatarImg }}
           src="/right-side-image_2.jpg"
         />
       </Grid>

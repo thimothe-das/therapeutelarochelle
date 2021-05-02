@@ -9,14 +9,10 @@ import {
   Collapse,
 } from "reactstrap";
 
-const Header = () => {
+const Header = ({ refs }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
-
-  /*--------------------------------------------------------------------------------*/
-  /*To open NAVBAR in MOBILE VIEW                                                   */
-  /*--------------------------------------------------------------------------------*/
 
   return (
     <div className="topbar" id="top">
@@ -40,7 +36,11 @@ const Header = () => {
                   <a
                     style={{ color: "white", fontWeight: "bold" }}
                     className="nav-link"
-                    href={"/components"}
+                    onClick={() =>
+                      refs.current.aboutMe.scrollIntoView({
+                        behavior: "smooth",
+                      })
+                    }
                   >
                     A propos
                   </a>
@@ -49,7 +49,11 @@ const Header = () => {
                   <a
                     style={{ color: "white", fontWeight: "bold" }}
                     className="nav-link"
-                    href={"/custom-components"}
+                    onClick={() =>
+                      refs.current.myBackground.scrollIntoView({
+                        behavior: "smooth",
+                      })
+                    }
                   >
                     Qui suis-je ?
                   </a>
@@ -58,7 +62,11 @@ const Header = () => {
                   <a
                     style={{ color: "white", fontWeight: "bold" }}
                     className="nav-link"
-                    href={"/custom-components"}
+                    onClick={() =>
+                      refs.current.proposedTherapies.scrollIntoView({
+                        behavior: "smooth",
+                      })
+                    }
                   >
                     Les différentes thérapies
                   </a>
@@ -67,7 +75,11 @@ const Header = () => {
                   <a
                     style={{ color: "white", fontWeight: "bold" }}
                     className="nav-link"
-                    href={"/custom-components"}
+                    onClick={() =>
+                      refs.current.pricing.scrollIntoView({
+                        behavior: "smooth",
+                      })
+                    }
                   >
                     Prestation
                   </a>
@@ -76,7 +88,11 @@ const Header = () => {
                   <a
                     style={{ color: "white", fontWeight: "bold" }}
                     className="nav-link"
-                    href={"/custom-components"}
+                    onClick={() =>
+                      refs.current.contactMe.scrollIntoView({
+                        behavior: "smooth",
+                      })
+                    }
                   >
                     Contact
                   </a>

@@ -1,12 +1,16 @@
 import { Avatar, Button, Grid, Typography } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import DirectionsIcon from "@material-ui/icons/Directions";
+import parse from "html-react-parser";
+import styles from "screens/ProposedTherapies.module.css";
 
-const ProposedTherapies = ({ proposedTherapiesData }) => {
-  const [selectedTherapy, setSelectedTherapy] = useState("schemas");
+const ProposedTherapies = ({ proposedTherapiesData, refs }) => {
+  const [selectedTherapy, setSelectedTherapy] = useState(0);
   return (
-    <div style={{ margin: "150px 0" }}>
-      {console.log("#############", proposedTherapiesData)}
+    <div
+      style={{ margin: "150px 0" }}
+      ref={(el) => (refs.current["proposedTherapies"] = el)}
+    >
       <div style={{ marginBottom: "80px" }}>
         <Typography
           align="center"
@@ -15,11 +19,7 @@ const ProposedTherapies = ({ proposedTherapiesData }) => {
         >
           {proposedTherapiesData.acf.title}
         </Typography>
-        <Typography
-          align="center"
-          variant="h6"
-          style={{ color: "#727577", margin: "0 25%" }}
-        >
+        <Typography align="center" variant="h6" className={styles.subtitle}>
           {proposedTherapiesData.acf.subtitle}
         </Typography>
       </div>
@@ -34,13 +34,11 @@ const ProposedTherapies = ({ proposedTherapiesData }) => {
             <Grid
               key={therapy.groude_de_champs_dune_therapie.logo.id}
               item
-              xs={2}
+              xs={4}
+              sm={2}
+              className={styles.therapyButton}
               style={{
-                margin: "30px 70px",
                 backgroundColor: selectedTherapy === index && "#f2745f",
-                borderRadius: "3px",
-                padding: "25px 0",
-                cursor: "pointer",
               }}
               onClick={() => setSelectedTherapy(index)}
             >
@@ -77,27 +75,20 @@ const ProposedTherapies = ({ proposedTherapiesData }) => {
               <Grid
                 key={therapy.groude_de_champs_dune_therapie.logo.id}
                 container
-                alignItems="flex-start"
+                spacing={2}
+                alignItems="center"
                 justify="center"
               >
-                <Grid item xs={5} style={{ padding: "0 20px" }}>
+                <Grid item xs={12} sm={6} style={{ padding: "0 20px" }}>
                   <Typography variant="h5" style={{ marginBottom: "20px" }}>
                     {therapy.groude_de_champs_dune_therapie.description_title}
                   </Typography>
-                  <Typography
-                    style={{ color: "#7a7a7a" }}
-                    variant="body1"
-                    dangerouslySetInnerHTML={{
-                      __html:
-                        therapy.groude_de_champs_dune_therapie.description,
-                    }}
-                  />
+                  <Typography style={{ color: "#7a7a7a" }} variant="body1">
+                    {parse(therapy.groude_de_champs_dune_therapie.description)}
+                  </Typography>
                 </Grid>
-                <Grid item xs={3}>
-                  <img
-                    style={{ width: "600px" }}
-                    src="right-side-image_5.jpg"
-                  />
+                <Grid item xs={12} sm={3}>
+                  <img style={{ width: "96%" }} src="right-side-image_5.jpg" />
                 </Grid>
               </Grid>
             </>
