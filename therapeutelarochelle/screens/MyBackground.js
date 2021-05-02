@@ -30,7 +30,7 @@ const MyBackground = ({ myBackgroundData, refs }) => {
         </Typography>
       </Grid>
       <Grid item xs={12} sm={3}>
-        <Grid container alignItems="center" justify="center" spacing={4}>
+        <Grid container alignItems="center" justify="center">
           {images.map((image, index) => (
             <>
               <Grid item xs={7} sm={5}>

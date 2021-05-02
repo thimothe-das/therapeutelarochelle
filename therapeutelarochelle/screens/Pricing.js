@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid, Typography, Avatar, Button } from "@material-ui/core";
 import parse from "html-react-parser";
+import styles from "screens/Pricing.module.css";
 
 const Pricing = ({ pricingData, refs }) => {
   return (
@@ -21,6 +22,7 @@ const Pricing = ({ pricingData, refs }) => {
           width: "30%",
           margin: "50px auto",
         }}
+        className={styles.pricingCard}
       >
         <Grid
           item
@@ -39,7 +41,15 @@ const Pricing = ({ pricingData, refs }) => {
           </Grid>
         ))}
         <Grid item xs={12} style={{ textAlign: "center" }}>
-          <Button color="primary" variant="contained">
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() =>
+              refs.current.contactMe.scrollIntoView({
+                behavior: "smooth",
+              })
+            }
+          >
             {pricingData.acf.btn_text}
           </Button>
         </Grid>

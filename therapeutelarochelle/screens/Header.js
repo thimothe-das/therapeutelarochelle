@@ -34,7 +34,11 @@ const Header = ({ refs }) => {
               <Nav navbar className="ml-auto">
                 <NavItem style={{ color: "white", fontWeight: "bold" }}>
                   <a
-                    style={{ color: "white", fontWeight: "bold" }}
+                    style={{
+                      color: "white",
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                    }}
                     className="nav-link"
                     onClick={() =>
                       refs.current.aboutMe.scrollIntoView({
@@ -47,7 +51,11 @@ const Header = ({ refs }) => {
                 </NavItem>
                 <NavItem>
                   <a
-                    style={{ color: "white", fontWeight: "bold" }}
+                    style={{
+                      color: "white",
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                    }}
                     className="nav-link"
                     onClick={() =>
                       refs.current.myBackground.scrollIntoView({
@@ -60,7 +68,11 @@ const Header = ({ refs }) => {
                 </NavItem>
                 <NavItem>
                   <a
-                    style={{ color: "white", fontWeight: "bold" }}
+                    style={{
+                      color: "white",
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                    }}
                     className="nav-link"
                     onClick={() =>
                       refs.current.proposedTherapies.scrollIntoView({
@@ -73,7 +85,11 @@ const Header = ({ refs }) => {
                 </NavItem>
                 <NavItem>
                   <a
-                    style={{ color: "white", fontWeight: "bold" }}
+                    style={{
+                      color: "white",
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                    }}
                     className="nav-link"
                     onClick={() =>
                       refs.current.pricing.scrollIntoView({
@@ -86,7 +102,11 @@ const Header = ({ refs }) => {
                 </NavItem>
                 <NavItem>
                   <a
-                    style={{ color: "white", fontWeight: "bold" }}
+                    style={{
+                      color: "white",
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                    }}
                     className="nav-link"
                     onClick={() =>
                       refs.current.contactMe.scrollIntoView({

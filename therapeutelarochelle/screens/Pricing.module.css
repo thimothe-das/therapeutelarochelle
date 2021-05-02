@@ -1,0 +1,9 @@
+.pricingCard {
+  width: 30% !important;
+}
+
+@media screen and (max-width: 600px) {
+  .pricingCard {
+    width: 90% !important;
+  }
+}

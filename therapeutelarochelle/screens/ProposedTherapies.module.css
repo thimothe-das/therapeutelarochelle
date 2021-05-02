@@ -6,6 +6,11 @@
   border-radius: 3px;
   padding: 25px 0;
   cursor: pointer;
+  transition-duration: 1.2s;
+}
+
+.therapyButton:hover {
+  background-color: powderblue;
 }
 
 @media screen and (min-width: 600px) {
@@ -15,4 +20,9 @@
   .therapyButton {
     margin: 30px 70px !important;
   }
+}
+.descriptionTherapy {
+  line-height: 26px !important;
+  letter-spacing: 0.25px !important;
+  text-align: justify !important;
 }

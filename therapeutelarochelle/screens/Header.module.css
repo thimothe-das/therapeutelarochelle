@@ -1,0 +1,9 @@
+.navbarLink {
+  color: white !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+}
+
+.navbarLink:hover {
+  color: gray;
+}

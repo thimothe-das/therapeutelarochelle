@@ -75,7 +75,6 @@ const ProposedTherapies = ({ proposedTherapiesData, refs }) => {
               <Grid
                 key={therapy.groude_de_champs_dune_therapie.logo.id}
                 container
-                spacing={2}
                 alignItems="center"
                 justify="center"
               >
@@ -83,7 +82,11 @@ const ProposedTherapies = ({ proposedTherapiesData, refs }) => {
                   <Typography variant="h5" style={{ marginBottom: "20px" }}>
                     {therapy.groude_de_champs_dune_therapie.description_title}
                   </Typography>
-                  <Typography style={{ color: "#7a7a7a" }} variant="body1">
+                  <Typography
+                    className={styles.descriptionTherapy}
+                    style={{ color: "#7a7a7a" }}
+                    variant="body1"
+                  >
                     {parse(therapy.groude_de_champs_dune_therapie.description)}
                   </Typography>
                 </Grid>

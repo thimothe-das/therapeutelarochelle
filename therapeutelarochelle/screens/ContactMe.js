@@ -49,9 +49,8 @@ const ContactMe = ({ contactData, refs }) => {
       </Typography>
       <Grid
         container
-        alignItems="center"
+        alignItems="flex-start"
         justify="space-evenly"
-        spacing={2}
         style={{ margin: "30px 0" }}
       >
         <Grid item xs={10} sm={5}>
@@ -80,7 +79,7 @@ const ContactMe = ({ contactData, refs }) => {
                 placeholder={contactData.acf.form.third_field}
               />
             </Grid>
-            <Grid item xs={12} sm={5}>
+            <Grid item xs={12} sm={10}>
               <TextField
                 onChange={(e) => setMessage(e.target.value)}
                 fullWidth
