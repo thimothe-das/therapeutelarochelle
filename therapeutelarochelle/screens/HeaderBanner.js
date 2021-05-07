@@ -4,7 +4,13 @@ import parse from "html-react-parser";
 
 export default function HeaderBanner({ headerBannerData }) {
   return (
-    <div className="static-slider-head" style={{ height: "100%" }}>
+    <div
+      className="static-slider-head"
+      style={{
+        height: "100%",
+        backgroundImage: `url(${headerBannerData.acf.background_img.url})`,
+      }}
+    >
       <Container>
         <Row className="justify-content-center">
           <Col lg="8" md="6" className="align-self-center text-center">

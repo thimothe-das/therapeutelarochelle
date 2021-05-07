@@ -12,6 +12,7 @@ const AboutMe = ({ aboutData, refs }) => {
       alignItems="center"
       ref={(el) => (refs.current["aboutMe"] = el)}
     >
+      {console.log(aboutData)}
       <Grid item xs={12} sm={7} className={styles.textWrapper}>
         <Typography
           style={{ marginBottom: "7px", color: "white" }}
@@ -33,7 +34,7 @@ const AboutMe = ({ aboutData, refs }) => {
         <Avatar
           className={styles.avatarImg}
           classes={{ img: styles.avatarImg }}
-          src="/right-side-image_2.jpg"
+          src={aboutData.acf.therapeute_img.url}
         />
       </Grid>
     </Grid>

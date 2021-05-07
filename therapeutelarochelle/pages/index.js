@@ -66,7 +66,7 @@ export default function Home({
 // This function gets called at build time
 export async function getStaticProps() {
   // Call an external API endpoint to get posts
-  const res = await fetch("http://localhost:8000/wp-json/wp/v2/pages");
+  const res = await fetch(process.env.API_BASE + "wp-json/wp/v2/pages");
   const data = await res.json();
 
   const headerBannerData = data.filter((page) => page.slug === "headerbanner");

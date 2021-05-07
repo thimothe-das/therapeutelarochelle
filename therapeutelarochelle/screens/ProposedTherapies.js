@@ -19,6 +19,7 @@ const ProposedTherapies = ({ proposedTherapiesData, refs }) => {
         >
           {proposedTherapiesData.acf.title}
         </Typography>
+        {console.log(proposedTherapiesData)}
         <Typography align="center" variant="h6" className={styles.subtitle}>
           {proposedTherapiesData.acf.subtitle}
         </Typography>
@@ -32,7 +33,7 @@ const ProposedTherapies = ({ proposedTherapiesData, refs }) => {
         {proposedTherapiesData.acf.liste_des_therapies_proposees.map(
           (therapy, index) => (
             <Grid
-              key={therapy.groude_de_champs_dune_therapie.logo.id}
+              key={therapy.therapy_elements.logo.id}
               item
               xs={4}
               sm={2}
@@ -51,7 +52,7 @@ const ProposedTherapies = ({ proposedTherapiesData, refs }) => {
                   height: "100px",
                 }}
                 alt="Remy Sharp"
-                src={therapy.groude_de_champs_dune_therapie.logo.url}
+                src={therapy.therapy_elements.logo.url}
               />
               <Typography
                 align="center"
@@ -60,7 +61,7 @@ const ProposedTherapies = ({ proposedTherapiesData, refs }) => {
                   color: selectedTherapy === index && "white",
                 }}
               >
-                {therapy.groude_de_champs_dune_therapie.btn_title}
+                {therapy.therapy_elements.btn_title}
               </Typography>
             </Grid>
           )
@@ -73,21 +74,21 @@ const ProposedTherapies = ({ proposedTherapiesData, refs }) => {
           selectedTherapy === index && (
             <>
               <Grid
-                key={therapy.groude_de_champs_dune_therapie.logo.id}
+                key={therapy.therapy_elements.logo.id}
                 container
                 alignItems="center"
                 justify="center"
               >
                 <Grid item xs={12} sm={6} style={{ padding: "0 20px" }}>
                   <Typography variant="h5" style={{ marginBottom: "20px" }}>
-                    {therapy.groude_de_champs_dune_therapie.description_title}
+                    {therapy.therapy_elements.description_title}
                   </Typography>
                   <Typography
                     className={styles.descriptionTherapy}
                     style={{ color: "#7a7a7a" }}
                     variant="body1"
                   >
-                    {parse(therapy.groude_de_champs_dune_therapie.description)}
+                    {parse(therapy.therapy_elements.description)}
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sm={3}>
