@@ -88,5 +88,6 @@ export async function getStaticProps() {
       pricingData,
       contactData,
     },
+    revalidate: 1,
   };
 }
