@@ -33,7 +33,13 @@ export default function Home({
   return (
     <>
       <Head>
-        <title>My page title</title>
+        <title>
+          Jean-Philippe DAS - Thérapeute EMDR | Trouble du comportement
+        </title>
+        <meta
+          name="description"
+          content="Jean-Philippe DAS, thérapeute spécialisé en EMDR, travaille dans la relation d'aide depuis 16 ans."
+        />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1"
@@ -46,7 +52,7 @@ export default function Home({
             className="container-fluid"
             style={{ height: windowHeight + "px" }}
           >
-            <HeaderBanner headerBannerData={headerBannerData[0]} />
+            <HeaderBanner headerBannerData={headerBannerData[0]} refs={refs} />
           </div>
           <AboutMe refs={refs} aboutData={aboutData[0]} />
           <ProposedTherapies

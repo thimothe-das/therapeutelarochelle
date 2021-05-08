@@ -1,21 +1,35 @@
-import { Button, Grid, Typography, Avatar, TextField } from "@material-ui/core";
+import {
+  Button,
+  Grid,
+  Typography,
+  TextField,
+  Snackbar,
+  CircularProgress,
+} from "@material-ui/core";
 import React, { useState } from "react";
 import parse from "html-react-parser";
 import axios from "axios";
 import styles from "screens/ContactMe.module.css";
+import { Formik } from "formik";
+import * as yup from "yup";
+import MuiAlert from "@material-ui/lab/Alert";
 
 const ContactMe = ({ contactData, refs }) => {
-  const [completename, setCompletename] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [message, setMessage] = useState("");
+  const [sendingForm, setSendingForm] = useState(false);
+  const [successSnackbar, setShowSuccessSnackbar] = useState(false);
+  const [errorSnackbar, setShowErrorSnackbar] = useState(false);
 
-  function submitForm() {
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
+  function submitForm(data, resetForm) {
+    setSendingForm(true);
     var bodyFormData = new FormData();
-    bodyFormData.append("completename", completename);
-    bodyFormData.append("email", email);
-    bodyFormData.append("phone", phone);
-    bodyFormData.append("message", message);
+    bodyFormData.append("completename", data.completeName);
+    bodyFormData.append("email", data.email);
+    bodyFormData.append("phone", data.phone);
+    bodyFormData.append("message", data.message);
 
     axios({
       method: "post",
@@ -26,16 +40,57 @@ const ContactMe = ({ contactData, refs }) => {
     })
       .then((response) => {
         //handle success
-        console.log(response);
+        if (response.data.status === "mail_sent") {
+          setShowSuccessSnackbar(true);
+          resetForm({});
+        } else {
+          setShowErrorSnackbar(true);
+        }
+        setSendingForm(false);
       })
       .catch((response) => {
         //handle error
         console.log(response);
       });
   }
+  const phoneRegExp = /^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}/;
+
+  const validationSchema = yup.object({
+    email: yup.string("Ajoutez votre email").email("Ajoutez un email valide"),
+    phone: yup
+      .string("Ajoutez votre téléphone")
+      .matches(phoneRegExp, "Numéro de téléphone n'est pas valide")
+      .required(
+        "Un numéro de téléphone est obligatoire afin que je puisse vous recontacter"
+      ),
+    message: yup.string("Entre votre nom et prénom"),
+    completeName: yup
+      .string("Ajoutez votre nom et prénom")
+      .required("Votre nom et/ou prénom doit être complété"),
+  });
 
   return (
     <>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        open={successSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setShowSuccessSnackbar(false)}
+      >
+        <Alert onClose={() => setShowSuccessSnackbar(false)} severity="success">
+          Votre message a bien été envoyé
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        open={errorSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setShowErrorSnackbar(false)}
+      >
+        <Alert onClose={() => setShowErrorSnackbar(false)} severity="error">
+          Une erreur est survenue, le message n'a pas pu être envoyé
+        </Alert>
+      </Snackbar>
       <Typography
         ref={(el) => (refs.current["contactMe"] = el)}
         align="center"
@@ -54,52 +109,99 @@ const ContactMe = ({ contactData, refs }) => {
         style={{ margin: "30px 0" }}
       >
         <Grid item xs={10} sm={5}>
-          <Grid container spacing={3} justify="flex-end">
-            <Grid item xs={12} sm={5}>
-              <TextField
-                fullWidth
-                onChange={(e) => setCompletename(e.target.value)}
-                variant="outlined"
-                placeholder={contactData.acf.form.first_field}
-              />
-            </Grid>
-            <Grid item xs={12} sm={5}>
-              <TextField
-                onChange={(e) => setEmail(e.target.value)}
-                fullWidth
-                variant="outlined"
-                placeholder={contactData.acf.form.second_field}
-              />
-            </Grid>
-            <Grid item xs={12} sm={5}>
-              <TextField
-                onChange={(e) => setPhone(e.target.value)}
-                fullWidth
-                variant="outlined"
-                placeholder={contactData.acf.form.third_field}
-              />
-            </Grid>
-            <Grid item xs={12} sm={10}>
-              <TextField
-                onChange={(e) => setMessage(e.target.value)}
-                fullWidth
-                multiline
-                rows={6}
-                variant="outlined"
-                placeholder={contactData.acf.form.fourth_field}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                style={{ float: "right" }}
-                variant="outlined"
-                onClick={() => submitForm()}
-              >
-                {contactData.acf.form.btn_text}
-              </Button>
-            </Grid>
-          </Grid>
+          <Formik
+            validateOnChange={true}
+            validateOnMount={true}
+            validateOnBlur={true}
+            enableReinitialize={true}
+            validationSchema={validationSchema}
+            initialValues={{}}
+            onSubmit={(values, { setSubmitting, resetForm }) => {
+              submitForm(values, resetForm);
+              setSubmitting(false);
+            }}
+          >
+            {(props) => (
+              <form onSubmit={props.handleSubmit}>
+                <Grid container spacing={3} justify="flex-end">
+                  <Grid item xs={12} sm={5}>
+                    <TextField
+                      fullWidth
+                      onChange={props.handleChange}
+                      variant="outlined"
+                      name="completeName"
+                      placeholder={contactData.acf.form.first_field}
+                      value={props.values.completeName || ""}
+                      error={
+                        props.touched.completeName &&
+                        Boolean(props.errors.completeName)
+                      }
+                      helperText={
+                        props.touched.completeName && props.errors.completeName
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={5}>
+                    <TextField
+                      onChange={props.handleChange}
+                      value={props.values.email || ""}
+                      fullWidth
+                      variant="outlined"
+                      name="email"
+                      placeholder={contactData.acf.form.second_field}
+                      error={props.touched.email && Boolean(props.errors.email)}
+                      onBlur={props.onBlur}
+                      helperText={props.touched.email && props.errors.email}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={5}>
+                    <TextField
+                      onChange={props.handleChange}
+                      fullWidth
+                      value={props.values.phone || ""}
+                      variant="outlined"
+                      name="phone"
+                      placeholder={contactData.acf.form.third_field}
+                      error={props.touched.phone && Boolean(props.errors.phone)}
+                      helperText={props.touched.phone && props.errors.phone}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={10}>
+                    <TextField
+                      onChange={props.handleChange}
+                      value={props.values.message || ""}
+                      fullWidth
+                      multiline
+                      name="message"
+                      rows={6}
+                      variant="outlined"
+                      placeholder={contactData.acf.form.fourth_field}
+                      error={
+                        props.touched.message && Boolean(props.errors.message)
+                      }
+                      helperText={props.touched.message && props.errors.message}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    {sendingForm ? (
+                      <CircularProgress style={{ float: "right" }} />
+                    ) : (
+                      <Button
+                        style={{ float: "right" }}
+                        variant="contained"
+                        type="submit"
+                        color="primary"
+                      >
+                        {contactData.acf.form.btn_text}
+                      </Button>
+                    )}
+                  </Grid>
+                </Grid>
+              </form>
+            )}
+          </Formik>
         </Grid>
+
         <Grid item xs={12} sm={4}>
           <iframe
             className={styles.googleMaps}

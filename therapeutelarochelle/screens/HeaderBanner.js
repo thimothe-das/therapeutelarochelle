@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import parse from "html-react-parser";
 
-export default function HeaderBanner({ headerBannerData }) {
+export default function HeaderBanner({ headerBannerData, refs }) {
   return (
     <div
       className="static-slider-head"
@@ -20,10 +20,15 @@ export default function HeaderBanner({ headerBannerData }) {
             </h4>
 
             <a
-              href="/#coming"
+              onClick={() =>
+                refs.current.aboutMe.scrollIntoView({
+                  behavior: "smooth",
+                })
+              }
+              style={{ color: "white" }}
               className="btn btn-md m-t-30 btn-info-gradiant font-14"
             >
-              Découvrir
+              Qui suis-je ?
             </a>
           </Col>
         </Row>
