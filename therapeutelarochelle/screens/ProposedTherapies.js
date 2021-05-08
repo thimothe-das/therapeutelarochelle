@@ -1,11 +1,12 @@
 import { Avatar, Button, Grid, Typography } from "@material-ui/core";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import DirectionsIcon from "@material-ui/icons/Directions";
 import parse from "html-react-parser";
 import styles from "screens/ProposedTherapies.module.css";
 
 const ProposedTherapies = ({ proposedTherapiesData, refs }) => {
   const [selectedTherapy, setSelectedTherapy] = useState(0);
+  const refDescription = useRef(null);
   return (
     <div
       style={{ margin: "150px 0" }}
@@ -29,6 +30,7 @@ const ProposedTherapies = ({ proposedTherapiesData, refs }) => {
         justify="center"
         alignItems="center"
         style={{ margin: "35px 0" }}
+        ref={refDescription}
       >
         {proposedTherapiesData.acf.liste_des_therapies_proposees.map(
           (therapy, index) => (
@@ -41,7 +43,12 @@ const ProposedTherapies = ({ proposedTherapiesData, refs }) => {
               style={{
                 backgroundColor: selectedTherapy === index && "#f2745f",
               }}
-              onClick={() => setSelectedTherapy(index)}
+              onClick={() => {
+                setSelectedTherapy(index);
+                refDescription.current.scrollIntoView({
+                  behavior: "smooth",
+                });
+              }}
             >
               <Avatar
                 style={{
@@ -51,7 +58,6 @@ const ProposedTherapies = ({ proposedTherapiesData, refs }) => {
                   width: "100px",
                   height: "100px",
                 }}
-                alt="Remy Sharp"
                 src={therapy.therapy_elements.logo.url}
               />
               <Typography
@@ -92,7 +98,10 @@ const ProposedTherapies = ({ proposedTherapiesData, refs }) => {
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sm={3}>
-                  <img style={{ width: "96%" }} src="right-side-image_5.jpg" />
+                  <img
+                    style={{ width: "96%" }}
+                    src={therapy.therapy_elements.img.url}
+                  />
                 </Grid>
               </Grid>
             </>

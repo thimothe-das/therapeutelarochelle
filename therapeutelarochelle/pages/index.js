@@ -1,4 +1,3 @@
-import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import HeaderBanner from "screens/HeaderBanner";
 import Header from "screens/Header";
@@ -9,6 +8,7 @@ import MyBackground from "screens/MyBackground";
 import Pricing from "screens/Pricing";
 import ContactMe from "screens/ContactMe";
 import Footer from "screens/Footer";
+import Meta from "screens/Meta";
 
 export default function Home({
   headerBannerData,
@@ -17,6 +17,7 @@ export default function Home({
   myBackgroundData,
   pricingData,
   contactData,
+  metaData,
 }) {
   const [windowHeight, setWindowHeight] = useState(100);
   useEffect(() => {
@@ -32,21 +33,9 @@ export default function Home({
 
   return (
     <>
-      <Head>
-        <title>
-          Jean-Philippe DAS - Thérapeute EMDR | Trouble du comportement
-        </title>
-        <meta
-          name="description"
-          content="Jean-Philippe DAS, thérapeute spécialisé en EMDR, travaille dans la relation d'aide depuis 16 ans."
-        />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1"
-        />
-      </Head>
+      <Meta metaData={metaData[0]} />
       <div id="main-wrapper">
-        <Header refs={refs} />
+        <Header HeaderData={headerBannerData[0]} refs={refs} />
         <div className="page-wrapper">
           <div
             className="container-fluid"
@@ -83,8 +72,10 @@ export async function getStaticProps() {
   const pricingData = data.filter((page) => page.slug === "pricing");
   const myBackgroundData = data.filter((page) => page.slug === "mybackground");
   const contactData = data.filter((page) => page.slug === "contact");
+  const metaData = data.filter((page) => page.slug === "meta");
   // By returning { props: { posts } }, the Blog component
   // will receive `posts` as a prop at build time
+
   return {
     props: {
       headerBannerData,
@@ -93,6 +84,7 @@ export async function getStaticProps() {
       myBackgroundData,
       pricingData,
       contactData,
+      metaData,
     },
     revalidate: 1,
   };

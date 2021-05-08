@@ -9,7 +9,7 @@ import {
   Collapse,
 } from "reactstrap";
 
-const Header = ({ refs }) => {
+const Header = ({ HeaderData, refs }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
@@ -20,7 +20,7 @@ const Header = ({ refs }) => {
         <Container className="po-relative">
           <Navbar className="navbar-expand-lg h6-nav-bar">
             <NavbarBrand href="/">
-              <img src={"/white-text.png"} alt="wrapkit" />
+              <img src={HeaderData.acf.logo.url} alt="wrapkit" />
             </NavbarBrand>
             <NavbarToggler onClick={toggle}>
               <span className="ti-menu"></span>

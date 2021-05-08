@@ -15,16 +15,10 @@ const MyBackground = ({ myBackgroundData, refs }) => {
       style={{ margin: "60px 0" }}
       alignItems="center"
     >
-      <Grid item xs={12}>
-        <Typography
-          variant="h3"
-          style={{ marginBottom: "20px" }}
-          align="center"
-        >
+      <Grid item xs={12} sm={7} style={{ padding: "0 20px" }}>
+        <Typography variant="h3" style={{ marginBottom: "20px" }}>
           {myBackgroundData.acf.title}
         </Typography>
-      </Grid>
-      <Grid item xs={12} sm={7} style={{ padding: "0 20px" }}>
         <Typography variant="subtitle1">
           {parse(myBackgroundData.acf.description)}
         </Typography>
