@@ -31,7 +31,7 @@ const Pricing = ({ pricingData, refs }) => {
                 style={{
                   backgroundColor: "#46bae2",
                   color: "white",
-                  padding: "15px",
+                  padding: "25px",
                 }}
               >
                 <Typography
