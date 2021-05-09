@@ -1,5 +1,5 @@
 version: "3.3"
-    
+
 services:
   db:
     image: mysql:5.7
@@ -11,7 +11,7 @@ services:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: wordpress
-    
+
   wordpress:
     depends_on:
       - db
@@ -24,8 +24,12 @@ services:
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
       WORDPRESS_DB_NAME: wordpress
-    volumes: 
-      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini 
+      WORDPRESS_CONFIG_EXTRA: |
+        define('FORCE_SSL_ADMIN', true);
+        if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false)
+        $_SERVER['HTTPS']='on';
+      volumes:
+        - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+        - ./wp-config.php:/var/www/html/wp-config.php
 volumes:
   db_data: {}
-  
