@@ -38,7 +38,7 @@ const ProposedTherapies = ({ proposedTherapiesData, refs }) => {
               key={therapy.therapy_elements.logo.id}
               item
               xs={4}
-              sm={2}
+              sm={1}
               className={styles.therapyButton}
               style={{
                 backgroundColor: selectedTherapy === index && "#f2745f",
