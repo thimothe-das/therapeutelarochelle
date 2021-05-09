@@ -26,3 +26,8 @@
   letter-spacing: 0.25px !important;
   text-align: justify !important;
 }
+
+.flexBtn {
+  max-width: 11.33% !important;
+  flex-basis: 11.33% !important;
+}

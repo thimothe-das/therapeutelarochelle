@@ -20,7 +20,6 @@ const ProposedTherapies = ({ proposedTherapiesData, refs }) => {
         >
           {proposedTherapiesData.acf.title}
         </Typography>
-        {console.log(proposedTherapiesData)}
         <Typography align="center" variant="h6" className={styles.subtitle}>
           {proposedTherapiesData.acf.subtitle}
         </Typography>
@@ -40,8 +39,12 @@ const ProposedTherapies = ({ proposedTherapiesData, refs }) => {
               xs={4}
               sm={1}
               className={styles.therapyButton}
+              classes={{
+                "grid-xs-4": styles.flexBtn, // class name, e.g. `classes-nesting-root-x`
+              }}
               style={{
-                backgroundColor: selectedTherapy === index && "#f2745f",
+                backgroundColor:
+                  selectedTherapy === index ? "#f2745f" : "#f4f4f4",
               }}
               onClick={() => {
                 setSelectedTherapy(index);
