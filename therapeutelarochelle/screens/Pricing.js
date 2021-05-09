@@ -14,7 +14,12 @@ const Pricing = ({ pricingData, refs }) => {
       </Typography>
       <Grid container alignItems="flex-start" justify="center">
         {pricingData.acf.repeater.map((card, index) => (
-          <Grid item xs={4} style={{ padding: "0 10px" }}>
+          <Grid
+            item
+            xs={11}
+            sm={4}
+            style={{ padding: "0 10px", margin: "15px 0" }}
+          >
             <Grid
               container
               alignItems="center"

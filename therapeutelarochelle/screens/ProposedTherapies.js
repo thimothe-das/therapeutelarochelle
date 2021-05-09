@@ -36,11 +36,11 @@ const ProposedTherapies = ({ proposedTherapiesData, refs }) => {
             <Grid
               key={therapy.therapy_elements.logo.id}
               item
-              xs={4}
+              xs={5}
               sm={1}
               className={styles.therapyButton}
               classes={{
-                "grid-xs-4": styles.flexBtn, // class name, e.g. `classes-nesting-root-x`
+                "grid-xs-4": styles.flexBtn,
               }}
               style={{
                 backgroundColor:

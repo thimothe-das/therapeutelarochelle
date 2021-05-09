@@ -34,7 +34,8 @@ const ContactMe = ({ contactData, refs }) => {
     axios({
       method: "post",
       url:
-        "http://localhost:8000/wp-json/contact-form-7/v1/contact-forms/128/feedback",
+        process.env.API_BASE +
+        "wp-json/contact-form-7/v1/contact-forms/128/feedback",
       data: bodyFormData,
       headers: { "Content-Type": "multipart/form-data" },
     })
