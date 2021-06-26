@@ -7,6 +7,8 @@ import ProposedTherapies from "screens/ProposedTherapies";
 import MyBackground from "screens/MyBackground";
 import Pricing from "screens/Pricing";
 import ContactMe from "screens/ContactMe";
+import MyOffice from "screens/MyOffice";
+
 import Footer from "screens/Footer";
 import Meta from "screens/Meta";
 
@@ -44,6 +46,7 @@ export default function Home({
             <HeaderBanner headerBannerData={headerBannerData[0]} refs={refs} />
           </div>
           <AboutMe refs={refs} aboutData={aboutData[0]} />
+          <MyOffice refs={refs} aboutData={aboutData[0]} />
           <ProposedTherapies
             refs={refs}
             proposedTherapiesData={proposedTherapiesData[0]}

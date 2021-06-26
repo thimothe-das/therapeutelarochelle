@@ -8,11 +8,10 @@ const AboutMe = ({ aboutData, refs }) => {
   return (
     <Grid
       container
-      style={{ backgroundColor: "#495057" }}
+      style={{ backgroundColor: "#495057", position: "relative" }}
       alignItems="center"
       ref={(el) => (refs.current["aboutMe"] = el)}
     >
-      {console.log(aboutData)}
       <Grid item xs={12} sm={7} className={styles.textWrapper}>
         <Typography
           style={{ marginBottom: "7px", color: "white" }}
@@ -26,7 +25,10 @@ const AboutMe = ({ aboutData, refs }) => {
         >
           {aboutData.acf.subtitle}
         </Typography>
-        <Typography variant="h6" style={{ color: "white" }}>
+        <Typography
+          variant="h6"
+          style={{ color: "white", textAlign: "justify" }}
+        >
           {parse(aboutData.acf.text)}
         </Typography>
       </Grid>

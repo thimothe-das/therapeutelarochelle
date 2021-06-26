@@ -33,9 +33,7 @@ const ContactMe = ({ contactData, refs }) => {
 
     axios({
       method: "post",
-      url:
-        process.env.API_BASE +
-        "wp-json/contact-form-7/v1/contact-forms/128/feedback",
+      url: "wp-json/contact-form-7/v1/contact-forms/128/feedback",
       data: bodyFormData,
       headers: { "Content-Type": "multipart/form-data" },
     })
@@ -105,11 +103,11 @@ const ContactMe = ({ contactData, refs }) => {
       </Typography>
       <Grid
         container
-        alignItems="flex-start"
+        alignItems="center"
         justify="space-evenly"
         style={{ margin: "30px 0" }}
       >
-        <Grid item xs={10} sm={5}>
+        <Grid item xs={10} sm={8} style={{ margin: "60px 0" }}>
           <Formik
             validateOnChange={true}
             validateOnMount={true}
@@ -124,8 +122,13 @@ const ContactMe = ({ contactData, refs }) => {
           >
             {(props) => (
               <form onSubmit={props.handleSubmit}>
-                <Grid container spacing={3} justify="flex-end">
-                  <Grid item xs={12} sm={5}>
+                <Grid
+                  container
+                  spacing={3}
+                  justify="flex-end"
+                  style={{ margin: "0 auto", width: "55%" }}
+                >
+                  <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
                       onChange={props.handleChange}
@@ -142,7 +145,7 @@ const ContactMe = ({ contactData, refs }) => {
                       }
                     />
                   </Grid>
-                  <Grid item xs={12} sm={5}>
+                  <Grid item xs={12} sm={6}>
                     <TextField
                       onChange={props.handleChange}
                       value={props.values.email || ""}
@@ -155,7 +158,7 @@ const ContactMe = ({ contactData, refs }) => {
                       helperText={props.touched.email && props.errors.email}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={5}>
+                  <Grid item xs={12} sm={6}>
                     <TextField
                       onChange={props.handleChange}
                       fullWidth
@@ -167,14 +170,14 @@ const ContactMe = ({ contactData, refs }) => {
                       helperText={props.touched.phone && props.errors.phone}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={10}>
+                  <Grid item xs={12} sm={12}>
                     <TextField
                       onChange={props.handleChange}
                       value={props.values.message || ""}
                       fullWidth
                       multiline
                       name="message"
-                      rows={6}
+                      rows={7}
                       variant="outlined"
                       placeholder={contactData.acf.form.fourth_field}
                       error={
@@ -202,14 +205,24 @@ const ContactMe = ({ contactData, refs }) => {
             )}
           </Formik>
         </Grid>
-
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={5}>
           <iframe
             className={styles.googleMaps}
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2763.4782903924574!2d-1.2196519844190679!3d46.16113397911534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x480154569e0841a3%3A0x8a9af438f797a226!2s5+Rue+de+la+Mare+%C3%A0+la+Besse%2C+17000+La+Rochelle!5e0!3m2!1sfr!2sfr!4v1559487149744!5m2!1sfr!2sfr"
+            src="https://maps.google.com/maps?hl=fr&amp;q=5%20rue%20de%20la%20mare%20%C3%A0%20la%20besse+(Titre)&amp;ie=UTF8&amp;t=&amp;z=11&amp;iwloc=B&amp;output=embed"
             frameBorder="0"
             allowFullScreen
-          ></iframe>
+            style={{ width: "100%" }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={5}>
+          <iframe
+            className={styles.googleMaps}
+            src="https://maps.google.com/maps?hl=fr&amp;q=14%20rue%20du%20chateau%20d%5C'alon+(Titre)&amp;ie=UTF8&amp;t=&amp;z=11&amp;iwloc=B&amp;output=embed"
+            frameborder="0"
+            marginheight="0"
+            marginwidth="0"
+            style={{ width: "100%" }}
+          />
         </Grid>
       </Grid>
     </>

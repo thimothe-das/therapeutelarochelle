@@ -13,6 +13,8 @@ export default function HeaderBanner({ headerBannerData, refs }) {
           left: "0",
           right: "0",
           top: "60px",
+          inset: "0 0",
+          zIndex: 1,
         }}
         params={{
           particles: {
@@ -25,11 +27,11 @@ export default function HeaderBanner({ headerBannerData, refs }) {
             },
             line_linked: {
               enable: true,
-              opacity: 0.02,
+              opacity: 0.2,
             },
             move: {
-              direction: "right",
-              speed: 0.05,
+              direction: "linear",
+              speed: 4,
             },
             size: {
               value: 1,
@@ -38,7 +40,7 @@ export default function HeaderBanner({ headerBannerData, refs }) {
               anim: {
                 enable: true,
                 speed: 1,
-                opacity_min: 0.05,
+                opacity_min: 0.65,
               },
             },
           },
@@ -47,6 +49,10 @@ export default function HeaderBanner({ headerBannerData, refs }) {
               onclick: {
                 enable: true,
                 mode: "push",
+              },
+              onhover: {
+                enable: true,
+                mode: "repulse",
               },
             },
             modes: {
@@ -74,21 +80,24 @@ export default function HeaderBanner({ headerBannerData, refs }) {
               <h4 className="subtitle font-light noselect">
                 {parse(headerBannerData.acf.subtitle)}
               </h4>
-
-              <a
-                onClick={() =>
-                  refs.current.aboutMe.scrollIntoView({
-                    behavior: "smooth",
-                  })
-                }
-                style={{ color: "white" }}
-                className="btn btn-md m-t-30 btn-info-gradiant font-14"
-              >
-                Qui suis-je ?
-              </a>
             </Col>
           </Row>
         </Container>
+        <a
+          onClick={() =>
+            refs.current.aboutMe.scrollIntoView({
+              behavior: "smooth",
+            })
+          }
+          style={{
+            color: "white",
+            zIndex: 2,
+            margin: "30px auto",
+          }}
+          className="btn btn-md m-t-30 btn-info-gradiant font-14"
+        >
+          Qui suis-je ?
+        </a>
       </div>
     </>
   );

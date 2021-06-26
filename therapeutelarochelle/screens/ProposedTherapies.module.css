@@ -4,10 +4,11 @@
 
 .therapyButton {
   border-radius: 3px;
-  padding: 25px 0;
+  padding: 25px 5px;
   cursor: pointer;
   transition-duration: 1.2s;
   margin: 10px !important;
+  min-width: 11%;
 }
 
 .therapyButton:hover {
