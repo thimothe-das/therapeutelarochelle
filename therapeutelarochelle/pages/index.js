@@ -33,6 +33,7 @@ export default function Home({
     myBackground: null,
     pricing: null,
     contactMe: null,
+    myOffice: null,
   });
 
   return (

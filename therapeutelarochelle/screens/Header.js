@@ -75,6 +75,23 @@ const Header = ({ HeaderData, refs }) => {
                     }}
                     className="nav-link"
                     onClick={() =>
+                      refs.current.myOffice.scrollIntoView({
+                        behavior: "smooth",
+                      })
+                    }
+                  >
+                    Mon cabinet
+                  </a>
+                </NavItem>
+                <NavItem>
+                  <a
+                    style={{
+                      color: "white",
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                    }}
+                    className="nav-link"
+                    onClick={() =>
                       refs.current.proposedTherapies.scrollIntoView({
                         behavior: "smooth",
                       })
