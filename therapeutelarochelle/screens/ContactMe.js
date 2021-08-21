@@ -33,7 +33,7 @@ const ContactMe = ({ contactData, refs }) => {
 
     axios({
       method: "post",
-      url: "wp-json/contact-form-7/v1/contact-forms/128/feedback",
+      url: "https://administration.therapeutelarochelle.fr/wp-json/contact-form-7/v1/contact-forms/128/feedback",
       data: bodyFormData,
       headers: { "Content-Type": "multipart/form-data" },
     })
