@@ -9,18 +9,14 @@ const ProposedTherapies = ({ proposedTherapiesData, refs }) => {
   const refDescription = useRef(null);
   return (
     <div
-      style={{ margin: "150px 0" }}
+      className="thematic-container"
       ref={(el) => (refs.current["proposedTherapies"] = el)}
     >
-      <div style={{ marginBottom: "80px" }}>
-        <Typography
-          align="center"
-          style={{ marginBottom: "7px", color: "black" }}
-          variant="h3"
-        >
+      <div className="intro-container">
+        <Typography align="center" className="intro-title" variant="h3">
           {proposedTherapiesData.acf.title}
         </Typography>
-        <Typography align="center" variant="h6" className={styles.subtitle}>
+        <Typography className="intro-description" align="center" variant="h6">
           {proposedTherapiesData.acf.subtitle}
         </Typography>
       </div>

@@ -89,7 +89,7 @@ Header 6
 
   @media (max-width: 900px) {
     .title {
-      font-size: 50px;
+      font-size: 30px;
     }
   }
 
@@ -1515,4 +1515,21 @@ Modal in center
 .animated {
   -webkit-animation-duration: 0.5s;
   animation-duration: 0.5s;
+}
+
+/*******************
+Elements redondants de la page d'accueil
+******************/
+.thematic-container {
+  padding: 50px 0;
+  .intro-container {
+    margin: 0 25% 80px 25%;
+    .intro-title {
+      color: black;
+      text-align: center;
+    }
+    .intro-description {
+      color: #727577;
+    }
+  }
 }

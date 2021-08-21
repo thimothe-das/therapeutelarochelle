@@ -8,6 +8,11 @@
   margin: 0 25% !important;
 }
 
+.contactPartContainer {
+  margin: 0 auto !important;
+  width: 70% !important;
+}
+
 @media screen and (max-width: 600px) {
   .googleMaps {
     width: 100%;
@@ -15,5 +20,8 @@
   }
   .subtitle {
     margin: 0 5% !important;
+  }
+  .contactPartContainer {
+    width: 95% !important;
   }
 }

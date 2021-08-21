@@ -13,7 +13,7 @@ const Footer = () => {
               Les différentes thérapies
             </Typography> */}
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12}>
             {/* <Typography style={{ color: "white" }}>
               LE BLOG ET LE QUIZ ARRIVENT BIENTÔT
             </Typography> */}

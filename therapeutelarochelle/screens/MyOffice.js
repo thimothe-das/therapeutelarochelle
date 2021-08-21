@@ -5,7 +5,7 @@ import parse from "html-react-parser";
 import styles from "screens/AboutMe.module.css";
 import Carousel from "components/Carousel";
 
-const MyOffice = ({ aboutData, refs }) => {
+const MyOffice = ({ myOfficeData, refs }) => {
   const slideData = [
     {
       index: 0,
@@ -33,26 +33,23 @@ const MyOffice = ({ aboutData, refs }) => {
     },
   ];
   return (
-    <Grid container>
+    <Grid
+      container
+      className="thematic-container"
+      style={{ position: "relative" }}
+    >
       <Grid item xs={12}>
-        <div style={{ margin: "80px 25%" }}>
-          <Typography
-            align="center"
-            style={{ marginBottom: "7px", color: "black" }}
-            variant="h3"
-          >
-            Mon cabinet
+        <div className="intro-container">
+          <Typography align="center" className="intro-title" variant="h3">
+            {myOfficeData.acf.titre}
           </Typography>
-          <Typography align="center" variant="h6">
-            Mon cabinet est situé 4 rue du chat percant et permet d'expliquer
-            plein de choses intéressantes. Il peut par exemple dire que je suis
-            ici ou au contraire que je suis parti plutot loin. Donc n'héistez
-            pas à me contadcter au besoin.
+          <Typography align="center" className="intro-description" variant="h6">
+            {myOfficeData.acf.sous_titre}
           </Typography>
         </div>
       </Grid>
-      <Grid item xs={12}>
-        <Carousel slides={slideData} heading="example" />
+      <Grid item xs={12} style={{ overflow: "hidden" }}>
+        <Carousel slides={myOfficeData.acf.images} heading="example" />
       </Grid>
     </Grid>
   );

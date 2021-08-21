@@ -72,12 +72,26 @@ export default function HeaderBanner({ headerBannerData, refs }) {
         }}
       >
         <Container>
-          <Row className="justify-content-center">
-            <Col lg="8" md="6" className="align-self-center text-center">
+          <Row style={{ justifyContent: "center !important" }}>
+            <Col
+              lg="8"
+              md="6"
+              style={{
+                textAlign: "center !important",
+                selfAlign: "center !important",
+              }}
+            >
               <h1 className="title noselect">
                 {headerBannerData.acf.principal_title}
               </h1>
-              <h4 className="subtitle font-light noselect">
+              <h4
+                className="subtitle noselect"
+                style={{
+                  color: "#ffffff",
+                  lineheight: "30px",
+                  fontWeight: "300",
+                }}
+              >
                 {parse(headerBannerData.acf.subtitle)}
               </h4>
             </Col>
@@ -93,6 +107,8 @@ export default function HeaderBanner({ headerBannerData, refs }) {
             color: "white",
             zIndex: 2,
             margin: "30px auto",
+            fontSize: "14px",
+            background: "linear-gradient(to right, #188ef4 0%, #316ce8 100%)",
           }}
           className="btn btn-md m-t-30 btn-info-gradiant font-14"
         >

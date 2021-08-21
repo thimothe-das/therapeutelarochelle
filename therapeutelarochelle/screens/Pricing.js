@@ -6,12 +6,14 @@ import styles from "screens/Pricing.module.css";
 const Pricing = ({ pricingData, refs }) => {
   return (
     <div
-      style={{ margin: "150px 0" }}
+      className="thematic-container"
       ref={(el) => (refs.current["pricing"] = el)}
     >
-      <Typography variant="h3" align="center" style={{ margin: "85px 0" }}>
-        {pricingData.acf.title}
-      </Typography>
+      <div className="intro-container">
+        <Typography variant="h3" align="center" className="intro-title">
+          {pricingData.acf.title}
+        </Typography>
+      </div>
       <Grid container alignItems="flex-start" justify="center">
         {pricingData.acf.repeater.map((card, index) => (
           <Grid

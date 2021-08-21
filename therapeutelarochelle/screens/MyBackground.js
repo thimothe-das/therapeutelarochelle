@@ -19,7 +19,7 @@ const MyBackground = ({ myBackgroundData, refs }) => {
         <Typography variant="h3" style={{ marginBottom: "20px" }}>
           {myBackgroundData.acf.title}
         </Typography>
-        <Typography variant="subtitle1">
+        <Typography variant="subtitle1" align="justify">
           {parse(myBackgroundData.acf.description)}
         </Typography>
       </Grid>

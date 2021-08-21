@@ -69,7 +69,7 @@ const ContactMe = ({ contactData, refs }) => {
   });
 
   return (
-    <>
+    <div className="thematic-container">
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
         open={successSnackbar}
@@ -90,24 +90,21 @@ const ContactMe = ({ contactData, refs }) => {
           Une erreur est survenue, le message n'a pas pu être envoyé
         </Alert>
       </Snackbar>
-      <Typography
-        ref={(el) => (refs.current["contactMe"] = el)}
-        align="center"
-        style={{ marginBottom: "7px", color: "black" }}
-        variant="h4"
-      >
-        {contactData.acf.title}
-      </Typography>
-      <Typography align="center" variant="h6" className={styles.subtitle}>
-        {parse(contactData.acf.subtitle)}
-      </Typography>
-      <Grid
-        container
-        alignItems="center"
-        justify="space-evenly"
-        style={{ margin: "30px 0" }}
-      >
-        <Grid item xs={10} sm={8} style={{ margin: "60px 0" }}>
+      <div className="intro-container">
+        <Typography
+          ref={(el) => (refs.current["contactMe"] = el)}
+          align="center"
+          className="intro-title"
+          variant="h4"
+        >
+          {contactData.acf.title}
+        </Typography>
+        <Typography align="center" variant="h6" className="intro-description">
+          {parse(contactData.acf.subtitle)}
+        </Typography>
+      </div>
+      <Grid container alignItems="center" justify="space-evenly">
+        <Grid item xs={10} sm={8}>
           <Formik
             validateOnChange={true}
             validateOnMount={true}
@@ -126,7 +123,7 @@ const ContactMe = ({ contactData, refs }) => {
                   container
                   spacing={3}
                   justify="flex-end"
-                  style={{ margin: "0 auto", width: "55%" }}
+                  className={styles.contactPartContainer}
                 >
                   <Grid item xs={12} sm={6}>
                     <TextField
@@ -225,7 +222,7 @@ const ContactMe = ({ contactData, refs }) => {
           />
         </Grid>
       </Grid>
-    </>
+    </div>
   );
 };
 

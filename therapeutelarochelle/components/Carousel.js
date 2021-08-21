@@ -35,7 +35,7 @@ class Slide extends React.Component {
   }
 
   handleSlideClick(event) {
-    this.props.handleSlideClick(this.props.slide.index);
+    this.props.handleSlideClick(parseInt(this.props.slide.ordre));
   }
 
   imageLoaded(event) {
@@ -43,13 +43,13 @@ class Slide extends React.Component {
   }
 
   render() {
-    const { src, button, headline, index } = this.props.slide;
+    const { image, button, mini_titre, ordre } = this.props.slide;
     const current = this.props.current;
     let classNames = "slide";
 
-    if (current === index) classNames += " slide--current";
-    else if (current - 1 === index) classNames += " slide--previous";
-    else if (current + 1 === index) classNames += " slide--next";
+    if (current === parseInt(ordre)) classNames += " slide--current";
+    else if (current - 1 === parseInt(ordre)) classNames += " slide--previous";
+    else if (current + 1 === parseInt(ordre)) classNames += " slide--next";
 
     return (
       <li
@@ -62,15 +62,17 @@ class Slide extends React.Component {
         <div className="slide__image-wrapper">
           <img
             className="slide__image"
-            alt={headline}
-            src={src}
+            alt={mini_titre}
+            src={image.url}
             onLoad={this.imageLoaded}
           />
         </div>
 
-        <article className="slide__content">
-          <p className="slide__headline">{headline}</p>
-        </article>
+        {mini_titre && (
+          <article className="slide__content">
+            <p className="slide__headline">{mini_titre}</p>
+          </article>
+        )}
       </li>
     );
   }
@@ -139,38 +141,39 @@ class Carousel extends React.Component {
     };
 
     return (
-      <div className="slider" aria-labelledby={headingId}>
-        <ul className="slider__wrapper" style={wrapperTransform}>
-          <h3 id={headingId} class="visuallyhidden">
-            {heading}
-          </h3>
+      <>
+        <div className="slider" aria-labelledby={headingId}>
+          <ul className="slider__wrapper" style={wrapperTransform}>
+            <h3 id={headingId} class="visuallyhidden">
+              {heading}
+            </h3>
 
-          {slides.map((slide) => {
-            return (
-              <Slide
-                key={slide.index}
-                slide={slide}
-                current={current}
-                handleSlideClick={this.handleSlideClick}
-              />
-            );
-          })}
-        </ul>
-
+            {slides.map((slide) => {
+              return (
+                <Slide
+                  key={parseInt(slide.ordre)}
+                  slide={slide}
+                  current={current}
+                  handleSlideClick={this.handleSlideClick}
+                />
+              );
+            })}
+          </ul>
+        </div>
         <div className="slider__controls">
           <SliderControl
             type="previous"
-            title="Go to previous slide"
+            title="Aller à l'image précèdente"
             handleClick={this.handlePreviousClick}
           />
 
           <SliderControl
             type="next"
-            title="Go to next slide"
+            title="Aller à l'image suivante"
             handleClick={this.handleNextClick}
           />
         </div>
-      </div>
+      </>
     );
   }
 }

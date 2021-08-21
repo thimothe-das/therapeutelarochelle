@@ -8,6 +8,7 @@ import MyBackground from "screens/MyBackground";
 import Pricing from "screens/Pricing";
 import ContactMe from "screens/ContactMe";
 import MyOffice from "screens/MyOffice";
+import Separator from "components/Separator";
 
 import Footer from "screens/Footer";
 import Meta from "screens/Meta";
@@ -17,6 +18,7 @@ export default function Home({
   aboutData,
   proposedTherapiesData,
   myBackgroundData,
+  myOfficeData,
   pricingData,
   contactData,
   metaData,
@@ -46,13 +48,34 @@ export default function Home({
             <HeaderBanner headerBannerData={headerBannerData[0]} refs={refs} />
           </div>
           <AboutMe refs={refs} aboutData={aboutData[0]} />
-          <MyOffice refs={refs} aboutData={aboutData[0]} />
+          <MyOffice refs={refs} myOfficeData={myOfficeData[0]} />
+          <Separator
+            color="linear-gradient(90deg, rgb(160 153 153), rgb(212 209 209), rgb(160 153 153))"
+            width="80%"
+            thickness="2px"
+          />
+
           <ProposedTherapies
             refs={refs}
             proposedTherapiesData={proposedTherapiesData[0]}
           />
+          <Separator
+            color="linear-gradient(90deg, rgb(160 153 153), rgb(212 209 209), rgb(160 153 153))"
+            width="80%"
+            thickness="2px"
+          />
           <MyBackground refs={refs} myBackgroundData={myBackgroundData[0]} />
+          <Separator
+            color="linear-gradient(90deg, rgb(160 153 153), rgb(212 209 209), rgb(160 153 153))"
+            width="80%"
+            thickness="2px"
+          />
           <Pricing refs={refs} pricingData={pricingData[0]} />
+          <Separator
+            color="linear-gradient(90deg, rgb(160 153 153), rgb(212 209 209), rgb(160 153 153))"
+            width="80%"
+            thickness="2px"
+          />
           <ContactMe refs={refs} contactData={contactData[0]} />
           <Footer />
         </div>
@@ -66,12 +89,13 @@ export async function getStaticProps() {
   // Call an external API endpoint to get posts
   const res = await fetch(process.env.API_BASE + "wp-json/wp/v2/pages");
   const data = await res.json();
-
   const headerBannerData = data.filter((page) => page.slug === "headerbanner");
   const aboutData = data.filter((page) => page.slug === "about");
   const proposedTherapiesData = data.filter(
     (page) => page.slug === "proposed_therapies"
   );
+  const myOfficeData = data.filter((page) => page.slug === "my_office");
+
   const pricingData = data.filter((page) => page.slug === "pricing");
   const myBackgroundData = data.filter((page) => page.slug === "mybackground");
   const contactData = data.filter((page) => page.slug === "contact");
@@ -88,6 +112,7 @@ export async function getStaticProps() {
       pricingData,
       contactData,
       metaData,
+      myOfficeData,
     },
     revalidate: 1,
   };
