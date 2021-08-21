@@ -97,6 +97,7 @@ export default function HeaderBanner({ headerBannerData, refs }) {
             </Col>
           </Row>
         </Container>
+
         <a
           onClick={() =>
             refs.current.aboutMe.scrollIntoView({

@@ -1,9 +1,19 @@
-.navbarLink {
-  color: white !important;
-  font-weight: bold !important;
-  cursor: pointer !important;
+.navlink {
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-.navbarLink:hover {
-  color: gray;
+.contact_button {
+  background-color: white !important;
+  color: #2f3335 !important;
+  width: 30px !important;
+  height: 30px !important;
+}
+
+.contact_button:hover {
+  background-color: #2f3335 !important;
+  color: white !important;
+  cursor: pointer;
+  transition: 1s;
 }
