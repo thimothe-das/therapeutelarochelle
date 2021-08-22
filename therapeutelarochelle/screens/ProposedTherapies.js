@@ -98,7 +98,7 @@ const ProposedTherapies = ({ proposedTherapiesData, refs }) => {
                 </Grid>
                 <Grid item xs={12} sm={3}>
                   <img
-                    style={{ width: "96%" }}
+                    style={{ width: "100%", padding: "15px" }}
                     src={therapy.therapy_elements.img.url}
                   />
                 </Grid>

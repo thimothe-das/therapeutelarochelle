@@ -13,22 +13,13 @@ const AboutMe = ({ aboutData, refs }) => {
       ref={(el) => (refs.current["aboutMe"] = el)}
     >
       <Grid item xs={12} sm={7} className={styles.textWrapper}>
-        <Typography
-          style={{ marginBottom: "7px", color: "white" }}
-          variant="h3"
-        >
+        <Typography variant="h3" className={styles.title}>
           {aboutData.acf.title}
         </Typography>
-        <Typography
-          variant="h5"
-          style={{ margin: "30px 0", color: "white", fontWeight: "bold" }}
-        >
+        <Typography variant="h5" className={styles.subtitle}>
           {aboutData.acf.subtitle}
         </Typography>
-        <Typography
-          variant="h6"
-          style={{ color: "white", textAlign: "justify" }}
-        >
+        <Typography variant="h6" className={styles.bigTextEl}>
           {parse(aboutData.acf.text)}
         </Typography>
       </Grid>

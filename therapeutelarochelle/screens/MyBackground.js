@@ -27,7 +27,7 @@ const MyBackground = ({ myBackgroundData, refs }) => {
         <Grid container alignItems="center" justify="space-between">
           {images.map((image, index) => (
             <>
-              <Grid item xs={6} sm={5}>
+              <Grid item xs={5} sm={5} style={{ margin: "0 auto" }}>
                 <img style={{ margin: "0 auto" }} src={image.url} />
               </Grid>
             </>

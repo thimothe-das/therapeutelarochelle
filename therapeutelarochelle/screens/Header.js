@@ -22,60 +22,31 @@ const duration = 10;
 const defaultStyle = {
   transition: "1s",
   width: "0px",
-  overflow: "hidden",
-  padding: "2px 20px",
-  backgroundColor: "white",
-  color: "black",
-  borderRadius: "0 3px 3px 0",
 };
 
 const transitionStyles = {
-  entering: {
-    overflow: "hidden",
-    padding: "2px 20px",
-  },
+  entering: {},
   entered: {
-    transition: "1s",
-    width: "160px",
-    overflow: "hidden",
-    padding: "2px 20px",
-    backgroundColor: "white",
-    color: "black",
-    borderRadius: "0 3px 3px 0",
-    marginLeft: "-15px",
+    width: "155px",
+    paddingLeft: "15px",
   },
-  exiting: {
-    overflow: "hidden",
-    padding: "2px 20px",
-  },
-  exited: { width: "0px", overflow: "hidden", padding: "2px 0" },
+  exiting: {},
+  exited: { width: "0px" },
 };
 
 const transitionStylesMail = {
-  entering: {
-    overflow: "hidden",
-    padding: "3px 10px",
-  },
+  entering: {},
   entered: {
-    transition: "1s",
-    width: "290px",
-    overflow: "hidden",
-    marginLeft: "-15px",
-    padding: "2px 20px",
-    backgroundColor: "white",
-    color: "black",
-    borderRadius: "0 3px 3px 0",
+    width: "285px",
+    paddingLeft: "15px",
   },
-  exiting: {
-    overflow: "hidden",
-    padding: "2px 20px",
-  },
-  exited: { width: "0px", overflow: "hidden", padding: "3px 0" },
+  exiting: {},
+  exited: { width: "0px" },
 };
 
 const defaultStyleIcon = {
-  backgroundColor: "white",
-  borderRadius: "15px",
+  transition: "1s",
+  width: "0px",
 };
 
 const transitionStylesIcon = {
@@ -208,7 +179,7 @@ const Header = ({ HeaderData, refs }) => {
                 <Hidden>
                   <NavItem
                     style={{
-                      margin: "0 5px 0 5px",
+                      margin: "0 5px",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "flex-start",
@@ -218,10 +189,6 @@ const Header = ({ HeaderData, refs }) => {
                       {(state) => (
                         <>
                           <Avatar
-                            style={{
-                              ...defaultStyleIcon,
-                              ...transitionStylesIcon[state],
-                            }}
                             variant="circular"
                             className={styles.contact_button}
                             onClick={() => {
@@ -231,6 +198,7 @@ const Header = ({ HeaderData, refs }) => {
                             style={{
                               border: "2px solid black",
                               backgroundColor: "white",
+                              margin: "0 6px",
                             }}
                           >
                             <PhoneIcon fontSize="small" />
@@ -240,8 +208,8 @@ const Header = ({ HeaderData, refs }) => {
                             style={{
                               ...defaultStyle,
                               ...transitionStyles[state],
-                              display: "flex",
                             }}
+                            className={styles.contactElement}
                           >
                             06.48.75.97.53
                             <Tooltip title={copiedPhone ? "Copié !" : "Copier"}>
@@ -295,10 +263,6 @@ const Header = ({ HeaderData, refs }) => {
                       {(state) => (
                         <>
                           <Avatar
-                            style={{
-                              ...defaultStyleIcon,
-                              ...transitionStylesIcon[state],
-                            }}
                             variant="circular"
                             className={styles.contact_button}
                             onClick={() => {
@@ -308,6 +272,7 @@ const Header = ({ HeaderData, refs }) => {
                             style={{
                               border: "2px solid black",
                               backgroundColor: "white",
+                              margin: "6px 6px",
                             }}
                           >
                             <MailIcon fontSize="small" />
@@ -317,8 +282,8 @@ const Header = ({ HeaderData, refs }) => {
                             style={{
                               ...defaultStyle,
                               ...transitionStylesMail[state],
-                              display: "flex",
                             }}
+                            className={styles.contactElement}
                           >
                             therapeutelarochelle@gmail.com
                             <Tooltip title={copiedMail ? "Copié !" : "Copier"}>
@@ -334,7 +299,6 @@ const Header = ({ HeaderData, refs }) => {
                                   <CheckIcon
                                     style={{
                                       color: "green",
-                                      position: "relative",
                                       marginLeft: "5px",
                                     }}
                                   />
@@ -347,7 +311,6 @@ const Header = ({ HeaderData, refs }) => {
                                       setCopiedMail(true);
                                     }}
                                     style={{
-                                      position: "relative",
                                       marginLeft: "5px",
                                       cursor: "pointer",
                                     }}
