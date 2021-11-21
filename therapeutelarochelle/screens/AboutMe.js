@@ -12,7 +12,7 @@ const AboutMe = ({ aboutData, refs }) => {
       alignItems="center"
       ref={(el) => (refs.current["aboutMe"] = el)}
     >
-      <Grid item xs={12} sm={7} className={styles.textWrapper}>
+      <Grid item xs={12} sm={8} className={styles.textWrapper}>
         <Typography variant="h3" className={styles.title}>
           {aboutData.acf.title}
         </Typography>
@@ -23,7 +23,7 @@ const AboutMe = ({ aboutData, refs }) => {
           {parse(aboutData.acf.text)}
         </Typography>
       </Grid>
-      <Grid item xs={12} sm={5}>
+      <Grid item xs={12} sm={4}>
         <Avatar
           className={styles.avatarImg}
           classes={{ img: styles.avatarImg }}

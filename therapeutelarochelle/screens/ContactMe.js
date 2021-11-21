@@ -202,16 +202,8 @@ const ContactMe = ({ contactData, refs }) => {
             )}
           </Formik>
         </Grid>
-        <Grid item xs={12} sm={5}>
-          <iframe
-            className={styles.googleMaps}
-            src="https://maps.google.com/maps?hl=fr&amp;q=5%20rue%20de%20la%20mare%20%C3%A0%20la%20besse+(Titre)&amp;ie=UTF8&amp;t=&amp;z=11&amp;iwloc=B&amp;output=embed"
-            frameBorder="0"
-            allowFullScreen
-            style={{ width: "100%" }}
-          />
-        </Grid>
-        <Grid item xs={12} sm={5}>
+
+        <Grid item xs={12} sm={11}>
           <iframe
             className={styles.googleMaps}
             src="https://maps.google.com/maps?hl=fr&amp;q=14%20rue%20du%20chateau%20d%5C'alon+(Titre)&amp;ie=UTF8&amp;t=&amp;z=11&amp;iwloc=B&amp;output=embed"
