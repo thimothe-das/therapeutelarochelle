@@ -116,29 +116,29 @@ export function QualificationsSection() {
         </div>
 
         <Tabs defaultValue="all" className="mb-12" value={activeCategory} onValueChange={setActiveCategory}>
-          <div className="flex justify-center mb-12">
-            <TabsList className="bg-gray-100 p-1 rounded-full">
+          <div className="flex justify-center mb-12 px-2 md:px-0">
+            <TabsList className="bg-gray-100 p-1 rounded-full flex-nowrap min-w-fit">
               <TabsTrigger
                 value="all"
-                className="rounded-full px-6 data-[state=active]:bg-teal-600 data-[state=active]:text-white"
+                className="rounded-full px-3 md:px-6 text-sm whitespace-nowrap data-[state=active]:bg-teal-600 data-[state=active]:text-white"
               >
                 Toutes
               </TabsTrigger>
               <TabsTrigger
                 value="diploma"
-                className="rounded-full px-6 data-[state=active]:bg-teal-600 data-[state=active]:text-white"
+                className="rounded-full px-3 md:px-6 text-sm whitespace-nowrap data-[state=active]:bg-teal-600 data-[state=active]:text-white"
               >
                 Diplômes
               </TabsTrigger>
               <TabsTrigger
                 value="certification"
-                className="rounded-full px-6 data-[state=active]:bg-teal-600 data-[state=active]:text-white"
+                className="rounded-full px-3 md:px-6 text-sm whitespace-nowrap data-[state=active]:bg-teal-600 data-[state=active]:text-white"
               >
                 Certifications
               </TabsTrigger>
               <TabsTrigger
                 value="membership"
-                className="rounded-full px-6 data-[state=active]:bg-teal-600 data-[state=active]:text-white"
+                className="rounded-full px-3 md:px-6 text-sm whitespace-nowrap data-[state=active]:bg-teal-600 data-[state=active]:text-white"
               >
                 Affiliations
               </TabsTrigger>
