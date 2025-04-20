@@ -310,7 +310,7 @@ export default function Header() {
 
       <div
         className={cn(
-          "fixed inset-0 top-[57px] bg-white/95 backdrop-blur-sm shadow-lg z-40 h-[calc(100vh-57px)] overflow-y-auto transform transition-transform duration-300 ease-in-out md:hidden -mt-2",
+          "fixed inset-0 top-[57px] bg-white/95 backdrop-blur-sm shadow-lg z-40 h-[calc(100vh-57px)] overflow-y-auto transform transition-transform duration-300 ease-in-out md:hidden ",
           isMenuOpen ? "translate-x-0" : "translate-x-full",
         )}
       >
@@ -333,7 +333,7 @@ export default function Header() {
             <div className="flex flex-col gap-4 text-gray-600">
               <div className="flex items-center gap-3 px-4 py-2">
                 <Phone className="h-5 w-5 text-teal-500" />
-                <span>{data.acf.telephone}</span>
+                <span>{data.acf.phone}</span>
               </div>
               <div className="flex items-center gap-3 px-4 py-2">
                 <Mail className="h-5 w-5 text-teal-500" />
