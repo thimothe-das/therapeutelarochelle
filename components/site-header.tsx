@@ -73,7 +73,11 @@ export default function Header() {
     <header
       className={cn(
         "fixed top-0 z-50 w-full transition-all duration-300",
-        scrolled ? "bg-white/90 backdrop-blur-md shadow-md py-2" : "bg-white/0 backdrop-blur-sm py-4",
+        scrolled 
+          ? "bg-white/90 backdrop-blur-md shadow-md py-2" 
+          : isMenuOpen 
+            ? "bg-white/95 backdrop-blur-sm shadow-md py-4 md:bg-white/0 md:shadow-none" 
+            : "bg-white/0 backdrop-blur-sm py-4",
       )}
     >
       <div className="container mx-auto flex items-center justify-between">
@@ -306,11 +310,11 @@ export default function Header() {
 
       <div
         className={cn(
-          "fixed inset-0 top-[57px] bg-white z-40 transform transition-transform duration-300 ease-in-out md:hidden",
+          "fixed inset-0 top-[57px] bg-white/95 backdrop-blur-sm shadow-lg z-40 h-[calc(100vh-57px)] overflow-y-auto transform transition-transform duration-300 ease-in-out md:hidden -mt-2",
           isMenuOpen ? "translate-x-0" : "translate-x-full",
         )}
       >
-        <nav className="flex flex-col p-6">
+        <nav className="flex flex-col p-6 ">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -324,13 +328,6 @@ export default function Header() {
               {pathname === link.href && <span className="ml-2 w-1.5 h-1.5 bg-teal-500 rounded-full" />}
             </Link>
           ))}
-
-          <Link
-            href="#contact"
-            className="flex items-center py-3 px-4 rounded-lg text-lg transition-all duration-200 text-gray-700 hover:bg-gray-50"
-          >
-            {data.acf.contact_cta}
-          </Link>
 
           <div className="mt-6 pt-6 border-t border-gray-100">
             <div className="flex flex-col gap-4 text-gray-600">
