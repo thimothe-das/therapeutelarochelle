@@ -4,6 +4,7 @@ import { MapPin, Phone, Mail, Calendar } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { getPosts } from "@/lib/utils"
 import parse from "html-react-parser"
+
 export default async function OfficePage() {
   const page = await getPosts("about")
   return (
@@ -11,7 +12,7 @@ export default async function OfficePage() {
       <section className="bg-gradient-to-r from-teal-900 to-teal-700 text-white py-20 px-4">
         <div className="max-w-5xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">{page.acf.title}</h1>
-          <p className="text-xl max-w-3xl">{parse(page.acf.description)}</p>
+          <p className="text-xl max-w-3xl">blablabla</p>
         </div>
       </section>
 
