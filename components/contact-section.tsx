@@ -255,9 +255,9 @@ export function ContactSection() {
     // Check if at least one day and time slot is selected
     const hasAvailability = formState.availability.some((day) => day.selected && day.selectedTimeSlots.length > 0)
 
-    if (!hasAvailability) {
-      errors.availability = "Veuillez sélectionner au moins un jour et un créneau horaire"
-    }
+    // if (!hasAvailability) {
+    //   errors.availability = "Veuillez sélectionner au moins un jour et un créneau horaire"
+    // }
 
     setFormErrors(errors)
     return Object.keys(errors).length === 0
