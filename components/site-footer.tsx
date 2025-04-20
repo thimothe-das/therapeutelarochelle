@@ -8,7 +8,7 @@ import useSWR from "swr"
 export  function SiteFooter() {
   const {data, error} = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/pages?slug=footer`, fetcher)
   if (!data) return null
-    console.log(data)
+
   return (
     <footer className="bg-gray-900 text-gray-300">
       <div className="container mx-auto py-12 px-4">
