@@ -1,0 +1,3 @@
+- Itineraire header doit etre dynamique
+- Bouton en savoir plus dans a propos doit avoir label dynamique
+- Bouton me contacter partie mon cabinet 
