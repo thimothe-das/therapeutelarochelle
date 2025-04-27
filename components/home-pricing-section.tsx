@@ -67,12 +67,15 @@ export function HomePricingSection() {
                   </span>
                 </div>
                 <ul className="mt-4 space-y-2">
-                  {plan.lines?.map((line: any) => (
-                    <li key={line.text} className="flex items-start gap-2">
-                      <Check className="h-4 w-4 flex-shrink-0 text-teal-500 mt-0.5" />
-                      <span className="text-sm text-gray-700">{line.text}</span>
-                    </li>
-                  ))}
+                  {plan?.lines &&
+                    plan?.lines?.map((line: any) => (
+                      <li key={line.text} className="flex items-start gap-2">
+                        <Check className="h-4 w-4 flex-shrink-0 text-teal-500 mt-0.5" />
+                        <span className="text-sm text-gray-700">
+                          {line.text}
+                        </span>
+                      </li>
+                    ))}
                 </ul>
                 <div className="mt-5">
                   <Button
