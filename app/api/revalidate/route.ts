@@ -48,9 +48,58 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Optional: GET handler for testing the endpoint
+// Enhanced GET handler that supports URL parameters for revalidation
 export async function GET(request: NextRequest) {
-  return NextResponse.json({
-    message: 'Revalidation endpoint is working. Use POST method to revalidate.',
-  });
+  const { searchParams } = new URL(request.url);
+  const secret = searchParams.get('secret');
+  const path = searchParams.get('path');
+  const tag = searchParams.get('tag');
+  
+  // If no parameters, just return a helpful message
+  if (!secret && !path && !tag) {
+    return NextResponse.json({
+      message: 'Revalidation endpoint is working. Add ?secret=YOUR_TOKEN&path=/your-path to revalidate.',
+    });
+  }
+  
+  // Verify the token
+  const expectedToken = process.env.REVALIDATE_TOKEN;
+  if (!expectedToken || secret !== expectedToken) {
+    return NextResponse.json(
+      { success: false, message: 'Invalid token' },
+      { status: 401 }
+    );
+  }
+
+  try {
+    // Handle path revalidation
+    if (path) {
+      revalidatePath(path);
+      return NextResponse.json({
+        revalidated: true,
+        message: `Path ${path} revalidated`,
+      });
+    }
+    
+    // Handle tag revalidation
+    if (tag) {
+      revalidateTag(tag);
+      return NextResponse.json({
+        revalidated: true,
+        message: `Tag ${tag} revalidated`,
+      });
+    }
+    
+    // No path or tag
+    return NextResponse.json(
+      { success: false, message: 'No path or tag specified' },
+      { status: 400 }
+    );
+  } catch (error) {
+    console.error('Revalidation error:', error);
+    return NextResponse.json(
+      { success: false, message: 'Error revalidating' },
+      { status: 500 }
+    );
+  }
 } 
