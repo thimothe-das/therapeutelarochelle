@@ -204,9 +204,9 @@ function TherapyCard({ therapy, index, onClick }: TherapyCardProps) {
           </div>
         </div>
         <div className="p-5 flex-1 flex flex-col">
-          <p className="text-gray-600 text-sm line-clamp-3 flex-1">
+          <div className="text-gray-600 text-sm line-clamp-3 flex-1">
             {parse(therapy.therapy_elements.description)}
-          </p>
+          </div>
           <div className="mt-4 flex items-center justify-end text-teal-600 group-hover:text-teal-700 transition-colors">
             <span className="text-sm font-medium">En savoir plus</span>
             <ChevronRight className="h-4 w-4 ml-1 transition-transform group-hover:translate-x-1" />
