@@ -1,105 +1,99 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath, revalidateTag } from 'next/cache';
+import { headers } from 'next/headers';
+import { NextRequest } from 'next/server';
 
-export async function POST(request: NextRequest) {
-  try {
-    // Get the secret token from the request
-    const requestHeaders = new Headers(request.headers);
-    const token = requestHeaders.get('x-revalidate-token');
-    
-    // Verify the token
-    const expectedToken = process.env.REVALIDATE_TOKEN;
-    if (!expectedToken || token !== expectedToken) {
-      return NextResponse.json(
-        { success: false, message: 'Invalid token' },
-        { status: 401 }
-      );
-    }
+/**
+ * Constants for HTTP Status codes.
+ */
+const STATUS_CODES = {
+  UNAUTHORIZED: 401,
+  PRECONDITION_FAILED: 412,
+  INTERNAL_SERVER_ERROR: 500,
+};
 
-    // Get the data from the request
-    const { path, tag } = await request.json();
+const { REVALIDATE_SECRET_KEY } = process.env;
 
-    if (path) {
-      revalidatePath(path);
-      return NextResponse.json({
-        revalidated: true,
-        message: `Path ${path} revalidated`,
-      });
-    }
-
-    if (tag) {
-      revalidateTag(tag);
-      return NextResponse.json({
-        revalidated: true,
-        message: `Tag ${tag} revalidated`,
-      });
-    }
-
-    return NextResponse.json(
-      { success: false, message: 'No path or tag specified' },
-      { status: 400 }
-    );
-  } catch (error) {
-    console.error('Revalidation error:', error);
-    return NextResponse.json(
-      { success: false, message: 'Error revalidating' },
-      { status: 500 }
-    );
-  }
+if (!REVALIDATE_SECRET_KEY) {
+  throw new Error('Missing REVALIDATE_SECRET_KEY environment variable');
 }
 
-// Enhanced GET handler that supports URL parameters for revalidation
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const secret = searchParams.get('secret');
-  const path = searchParams.get('path');
-  const tag = searchParams.get('tag');
-  
-  // If no parameters, just return a helpful message
-  if (!secret && !path && !tag) {
-    return NextResponse.json({
-      message: 'Revalidation endpoint is working. Add ?secret=YOUR_TOKEN&path=/your-path to revalidate.',
+export async function PUT(request: NextRequest) {
+  const { paths, tags }: { paths?: string[]; tags?: string[] } = await request.json();
+
+  console.log('Received paths:', paths);
+  console.log('Received tags:', tags);
+
+  const headersList = headers();
+  const authorizationHeader = headersList.get('authorization');
+
+  console.log('Authorization header:', authorizationHeader);
+
+  if (authorizationHeader !== `Bearer ${REVALIDATE_SECRET_KEY}`) {
+    console.error(`Invalid token: ${authorizationHeader}`);
+    return new Response(`Invalid token`, { status: STATUS_CODES.UNAUTHORIZED });
+  }
+
+  if (!paths && !tags) {
+    console.error(`Precondition Failed: Missing paths and tags`);
+    return new Response(`Precondition Failed: Missing paths and tags`, {
+      status: STATUS_CODES.PRECONDITION_FAILED,
     });
   }
-  
-  // Verify the token
-  const expectedToken = process.env.REVALIDATE_TOKEN;
-  if (!expectedToken || secret !== expectedToken) {
-    return NextResponse.json(
-      { success: false, message: 'Invalid token' },
-      { status: 401 }
-    );
+
+  let revalidatePaths: string[] = [];
+  let correctTags: string[] = [];
+
+  if (paths) {
+    revalidatePaths = paths.filter(path => path.startsWith('/'));
+
+    console.log('Filtered correct paths:', revalidatePaths);
+  }
+
+  if (tags) {
+    correctTags = tags.filter(tag => typeof tag === 'string');
+    console.log('Filtered correct tags:', correctTags);
   }
 
   try {
-    // Handle path revalidation
-    if (path) {
+    revalidatePaths.forEach(path => {
       revalidatePath(path);
-      return NextResponse.json({
-        revalidated: true,
-        message: `Path ${path} revalidated`,
-      });
-    }
-    
-    // Handle tag revalidation
-    if (tag) {
+    });
+
+    correctTags.forEach(tag => {
       revalidateTag(tag);
-      return NextResponse.json({
+    });
+
+    console.log(
+      `${new Date().toJSON()} - Paths and tags revalidated: ${revalidatePaths.join(
+        ', '
+      )} and ${correctTags.join(', ')}`
+    );
+
+    return new Response(
+      JSON.stringify({
         revalidated: true,
-        message: `Tag ${tag} revalidated`,
-      });
+        message: `Paths and tags revalidated: ${revalidatePaths.join(
+          ', '
+        )} and ${correctTags.join(', ')}`,
+      }),
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+  } catch (err: unknown) {
+    let message: string;
+
+    if (err instanceof Error) {
+      message = err.message;
+    } else {
+      message = 'An error occurred';
     }
-    
-    // No path or tag
-    return NextResponse.json(
-      { success: false, message: 'No path or tag specified' },
-      { status: 400 }
-    );
-  } catch (error) {
-    console.error('Revalidation error:', error);
-    return NextResponse.json(
-      { success: false, message: 'Error revalidating' },
-      { status: 500 }
-    );
+    console.error('Revalidation error:', message);
+    return new Response(message, {
+      status: STATUS_CODES.INTERNAL_SERVER_ERROR,
+    });
   }
-} 
+}
