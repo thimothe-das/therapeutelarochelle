@@ -29,12 +29,12 @@ export default async function Home() {
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 tracking-tight">
             {headerbanner.acf.principal_title}
           </h1>
-          <p className="text-lg md:text-xl lg:text-2xl max-w-3xl mx-auto mb-8 leading-relaxed">
+          <h2 className="text-lg md:text-xl lg:text-2xl max-w-3xl mx-auto mb-8 leading-relaxed">
             {parse(headerbanner.acf.subtitle)}
-          </p>
-          <p className="text-base md:text-lg mb-8 opacity-90 max-w-2xl">
+          </h2>
+          <h3 className="text-base md:text-lg mb-8 opacity-90 max-w-2xl">
             {parse(headerbanner.acf.details)}
-          </p>
+          </h3>
           <div className="flex flex-col sm:flex-row gap-4 mt-4">
             <Button
               asChild
