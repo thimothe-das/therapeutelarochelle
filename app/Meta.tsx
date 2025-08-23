@@ -12,11 +12,6 @@ async function Meta() {
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <script
-        defer
-        src="https://umami.local.thimothe-das.fr/script.js"
-        data-website-id="037aeef6-ef0d-4940-8288-1ab3da5f5a22"
-      />
     </Head>
   );
 }

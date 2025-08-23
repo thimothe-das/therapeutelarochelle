@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-white font-sans antialiased">
         <Script
           defer
-          src="https://analytics.local.thimothe-das.fr/script.js"
+          src="https://umami.local.thimothe-das.fr/script.js"
           data-website-id="037aeef6-ef0d-4940-8288-1ab3da5f5a22"
         />
 
