@@ -1,20 +1,25 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { Phone, Mail, MapPin } from "lucide-react"
-import { fetcher } from "@/lib/utils"
-import useSWR from "swr"
+import { fetcher } from "@/lib/utils";
+import { Mail, MapPin, Phone } from "lucide-react";
+import Link from "next/link";
+import useSWR from "swr";
 
-export  function SiteFooter() {
-  const {data, error} = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/pages?slug=footer`, fetcher)
-  if (!data) return null
+export function SiteFooter() {
+  const { data, error } = useSWR(
+    `${process.env.NEXT_PUBLIC_API_URL}/pages?slug=footer`,
+    fetcher
+  );
+  if (!data) return null;
 
   return (
     <footer className="bg-gray-900 text-gray-300">
       <div className="container mx-auto py-12 px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4 text-white">{data?.acf.left.title}</h3>
+            <h3 className="text-xl font-semibold mb-4 text-white">
+              {data?.acf.left.title}
+            </h3>
             <p className="mb-4">{data?.acf.left.description}</p>
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-3">
@@ -33,24 +38,34 @@ export  function SiteFooter() {
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold mb-4 text-white">{data?.acf.middle.title}</h3>
+            <h3 className="text-xl font-semibold mb-4 text-white">
+              {data?.acf.middle.title}
+            </h3>
             <ul className="space-y-2">
               {data?.acf.middle.lines.map((line: any, index: number) => (
                 <li key={index}>
-                  <Link href={line.link} className="hover:text-teal-400 transition-colors">
+                  <Link
+                    href={line.link}
+                    className="hover:text-teal-400 transition-colors"
+                  >
                     {line.text}
                   </Link>
                 </li>
               ))}
-                </ul>
+            </ul>
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold mb-4 text-white">{data?.acf.right.title}</h3>
+            <h3 className="text-xl font-semibold mb-4 text-white">
+              {data?.acf.right.title}
+            </h3>
             <ul className="space-y-2">
               {data?.acf.right.lines.map((line: any, index: number) => (
                 <li key={index}>
-                  <Link href={line.link} className="hover:text-teal-400 transition-colors">
+                  <Link
+                    href={line.link}
+                    className="hover:text-teal-400 transition-colors"
+                  >
                     {line.text}
                   </Link>
                 </li>
@@ -60,9 +75,18 @@ export  function SiteFooter() {
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm">
-          <p>© {new Date().getFullYear()} Jean-Philippe DAS. Tous droits réservés.</p>
+          <p className="flex items-center justify-center gap-1">
+            © {new Date().getFullYear()} - Design et développement par
+            <Link
+              href="https://dastech.fr"
+              target="_blank"
+              className="hover:text-teal-400 transition-colors font-bold underline"
+            >
+              Dastech
+            </Link>
+          </p>
         </div>
       </div>
     </footer>
-  )
+  );
 }
