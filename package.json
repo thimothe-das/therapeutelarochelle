@@ -1,6 +1,7 @@
 {
   "name": "therapeutelarochellev2",
   "version": "0.1.0",
+  "packageManager": "pnpm@10.10.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
