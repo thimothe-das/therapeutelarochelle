@@ -1,0 +1,26 @@
+# Ce que le démon Docker ne doit pas recevoir.
+#
+# Sans ce fichier le contexte embarque `node_modules` et `.git`, et surtout un
+# `node_modules` compilé pour la machine de développement qui écraserait celui
+# de l'étape `deps`.
+
+node_modules
+.next
+.git
+.github
+.env
+.env.*
+!.env.example
+
+coverage
+*.tsbuildinfo
+.vercel
+
+# Sans effet sur l'image produite
+README.md
+notes.txt
+Dockerfile
+.dockerignore
+
+.DS_Store
+*.log

@@ -11,13 +11,28 @@ const STATUS_CODES = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
-const { REVALIDATE_SECRET_KEY } = process.env;
-
-if (!REVALIDATE_SECRET_KEY) {
-  throw new Error('Missing REVALIDATE_SECRET_KEY environment variable');
-}
-
+/**
+ * Vérification de la configuration, faite à l'appel et non à l'import.
+ *
+ * Ce contrôle s'exécutait au niveau module. La phase « Collecting page data »
+ * de `next build` évalue les modules de routes, donc l'absence de la variable
+ * faisait échouer la construction entière plutôt qu'un seul appel — et
+ * obligeait à fournir le secret au moment de la construction, où il se serait
+ * retrouvé inscrit dans l'historique de l'image.
+ *
+ * Rien n'est masqué : la requête échoue toujours, mais avec un 500 explicite
+ * au lieu d'un module qui refuse de se charger.
+ */
 export async function PUT(request: NextRequest) {
+  const { REVALIDATE_SECRET_KEY } = process.env;
+
+  if (!REVALIDATE_SECRET_KEY) {
+    console.error('Missing REVALIDATE_SECRET_KEY environment variable');
+    return new Response('Server misconfigured', {
+      status: STATUS_CODES.INTERNAL_SERVER_ERROR,
+    });
+  }
+
   const { paths, tags }: { paths?: string[]; tags?: string[] } = await request.json();
 
   console.log('Received paths:', paths);
@@ -26,10 +41,13 @@ export async function PUT(request: NextRequest) {
   const headersList = headers();
   const authorizationHeader = headersList.get('authorization');
 
-  console.log('Authorization header:', authorizationHeader);
-
+  // Les deux journalisations qui se trouvaient ici écrivaient l'en-tête
+  // d'autorisation en clair, y compris quand il était correct. Un secret qui
+  // transite par un journal cesse d'être un secret : les journaux se
+  // recopient, s'exportent et se lisent par bien plus de monde que l'API.
+  // On ne trace donc plus que le rejet, sans sa valeur.
   if (authorizationHeader !== `Bearer ${REVALIDATE_SECRET_KEY}`) {
-    console.error(`Invalid token: ${authorizationHeader}`);
+    console.error('Invalid token');
     return new Response(`Invalid token`, { status: STATUS_CODES.UNAUTHORIZED });
   }
 
