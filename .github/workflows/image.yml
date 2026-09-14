@@ -1,0 +1,188 @@
+# Construire l'image du site et la pousser sur GHCR.
+#
+# ===========================================================================
+# CE QU'IL FAIT, ET CE QU'IL NE FAIT PAS
+# ===========================================================================
+# Il construit et il pousse. **Il ne deploie pas.** Le tag doit etre repris
+# dans `homelab-infra`, dont l'AppProject `prod` exige des commits signes
+# (`signatureKeys: 5C2B6F0819209A84`). Automatiser ce bump reviendrait a
+# decider que pousser ici suffit a changer la production : un arbitrage, pas un
+# detail d'outillage.
+#
+# ===========================================================================
+# POURQUOI CE DEPOT N'AVAIT AUCUNE CI JUSQU'AU 2026-09-14
+# ===========================================================================
+# Son image tournait en production (`ghcr.io/thimothe-das/therapeutelarochelle`)
+# sans qu'aucun mecanisme sache la refabriquer : elle venait de Coolify, dont
+# les webhooks ont ete retires a la migration k3s. Un site client vivait donc
+# sur une image que plus personne ne pouvait reconstruire.
+#
+# ===========================================================================
+# AUCUN SERVICE EXTERNE N'EST NECESSAIRE A LA CONSTRUCTION
+# ===========================================================================
+# Le Dockerfile le dit en son point 3, et c'est verifie : le site consomme
+# l'API d'administration WordPress A L'EXECUTION, pas au build. Aucun
+# `generateStaticParams`, aucun prerendu qui interrogerait l'API. C'est ce qui
+# rend ce workflow bien plus simple que ceux des deux sites Payload, qui eux
+# exigent une base a la construction.
+name: image
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  construire:
+    runs-on: [self-hosted, dascan-homelab]
+    env:
+      IMAGE: therapeutelarochelle
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Se connecter a GHCR
+        run: |
+          echo "${{ secrets.GHCR_PUSH_TOKEN || secrets.GITHUB_TOKEN }}" \
+            | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Construire et pousser
+        env:
+          # `NEXT_PUBLIC_API_URL` EST UNE VARIABLE, PAS UN SECRET, ET C'EST
+          # VOLONTAIRE. Next inscrit les `NEXT_PUBLIC_*` dans le JavaScript
+          # livre au navigateur : leur valeur est publique par construction, et
+          # la ranger dans un secret donnerait l'illusion d'une protection que
+          # le bundle dement. Le Dockerfile porte la meme note en son point 2.
+          #
+          # `REVALIDATE_SECRET_KEY` N'EST PAS ICI, ET NE DOIT JAMAIS Y ETRE :
+          # il est lu a l'execution et vit dans le Secret chiffre du cluster.
+          # En faire un ARG l'inscrirait dans `docker history` pour toujours.
+          NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL }}
+        run: |
+          set -euo pipefail
+          [ -n "$NEXT_PUBLIC_API_URL" ] || {
+            echo "::error::variable de depot NEXT_PUBLIC_API_URL absente"; exit 1; }
+
+          # ⚠ LE VERROU SE PREND ICI ET NULLE PART AILLEURS.
+          #
+          # Cinq runners partagent ce conteneur LXC et donc `$HOME`. Un `flock`
+          # sur un fichier de ce repertoire les serialise : sans lui, deux
+          # constructions Next se sont deja disputees le meme hyperviseur
+          # jusqu'a le faire tomber (2026-09-13).
+          #
+          # `exec 9>` ET PAS `flock … commande` : un descripteur ouvert dans le
+          # shell de l'etape se relache quand ce shell se termine, donc a la fin
+          # de l'etape. Une premiere version avait pose le verrou dans une etape
+          # qui se terminait aussitot : il ne protegeait rien.
+          exec 9>"$HOME/.ci-build.lock"
+          flock -w 3600 9 || { echo "::error::verrou non obtenu en 1 h"; exit 1; }
+
+          # BUILDKIT ACTIF ICI, CONTRAIREMENT AUX DEUX SITES PAYLOAD.
+          # Ceux-la doivent le desactiver parce qu'ils ont besoin d'un
+          # `--network` personnalise pour joindre leur Mongo, que BuildKit
+          # refuse (issue Coolify #9804). Ce Dockerfile-ci n'a besoin d'aucun
+          # reseau, et il emploie `--mount=type=cache` pour le magasin pnpm —
+          # que SEUL BuildKit sait honorer. Le desactiver par mimetisme ferait
+          # retelecharger toutes les dependances a chaque build.
+          DOCKER_BUILDKIT=1 docker build \
+            --pull \
+            --build-arg NEXT_PUBLIC_API_URL="$NEXT_PUBLIC_API_URL" \
+            -t "ghcr.io/thimothe-das/$IMAGE:main-$GITHUB_SHA" .
+
+          docker push "ghcr.io/thimothe-das/$IMAGE:main-$GITHUB_SHA"
+          echo "ghcr.io/thimothe-das/$IMAGE:main-$GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Verifier que l'image demarre et sert
+        # ===================================================================
+        # POURQUOI ON N'EXIGE PAS HTTP 200 ICI, ALORS QUE dastech LE FAIT
+        # ===================================================================
+        # La page d'accueil de ce site interroge le WordPress
+        # d'administration A L'EXECUTION (`lib/utils.ts`). Exiger 200
+        # reviendrait donc a faire dependre la CI de la disponibilite d'un
+        # service tiers : le jour ou ce WordPress tombe, ce depot passerait au
+        # rouge pour une panne qui n'est pas la sienne, et un rouge qu'on
+        # apprend a ignorer ne surveille plus rien.
+        #
+        # CE QU'ON VERIFIE DONC : que le conteneur demarre et qu'il REPOND en
+        # HTTP. Ca attrape le mode de panne qui compte — une image qui ne boote
+        # pas, un `server.js` absent, un port qui n'ecoute pas — sans importer
+        # la sante d'un tiers. Le statut obtenu est reporte dans le resume : un
+        # 500 passe le job mais se voit, et dit ou regarder.
+        #
+        # ⚠ AUCUN PORT PUBLIE. Une version antérieure de ces workflows faisait
+        # `-p 39000:3000` et interrogeait `127.0.0.1`. Cinq runners partagent
+        # cette machine : le 2026-09-14, deux jobs ont tourne en meme temps et
+        # le second est mort sur
+        #   Bind for 0.0.0.0:39000 failed: port is already allocated
+        # alors que son image etait parfaitement construite. On interroge donc
+        # depuis l'INTERIEUR du conteneur, ou aucune reservation n'existe.
+        run: |
+          set -uo pipefail
+          nom="site-$GITHUB_RUN_ID"
+          docker rm -fv "$nom" >/dev/null 2>&1 || true
+          docker run -d --name "$nom" \
+            -e NEXT_PUBLIC_API_URL="${{ vars.NEXT_PUBLIC_API_URL }}" \
+            "ghcr.io/thimothe-das/$IMAGE:main-$GITHUB_SHA" >/dev/null
+
+          reponse=""
+          for i in $(seq 1 40); do
+            reponse=$(docker exec "$nom" node -e \
+              "fetch('http://127.0.0.1:'+process.env.PORT).then(r=>{console.log('HTTP '+r.status);process.exit(0)}).catch(()=>process.exit(1))" \
+              2>/dev/null) && break
+            sleep 3
+          done
+
+          docker logs "$nom" 2>&1 | tail -15
+
+          case "$reponse" in
+            "HTTP 2"*)
+              echo "  l'image demarre et sert : $reponse" >> "$GITHUB_STEP_SUMMARY" ;;
+            HTTP*)
+              echo "  l'image demarre et sert, mais rend $reponse" >> "$GITHUB_STEP_SUMMARY"
+              echo "::warning::l'image repond $reponse — souvent le WordPress d'administration injoignable, a verifier avant de deployer" ;;
+            *)
+              echo "::error::l'image ne repond pas du tout — elle ne demarre pas"; exit 1 ;;
+          esac
+
+      - name: Nettoyer
+        if: always()
+        # `-v` : sans lui les volumes anonymes d'un conteneur s'accumulent a
+        # chaque run. Ce site n'en declare aucun aujourd'hui, mais le nettoyage
+        # ne doit pas dependre de ce que l'image declarera demain.
+        run: docker rm -fv "site-$GITHUB_RUN_ID" >/dev/null 2>&1 || true
+
+      - name: Elaguer ce que la construction a laisse
+        if: always()
+        # ⚠ L'ELAGAGE PREND LE MEME VERROU QUE LA CONSTRUCTION. Le 2026-09-14,
+        # l'elagage d'un depot s'est lance pendant qu'un autre exportait encore
+        # ses couches :
+        #   failed to export layer: CreateDiff: mount callback failed
+        # Le disque etait a 37 % : ce n'etait pas une question de place, mais de
+        # simultaneite.
+        #
+        # `--volumes` est necessaire et son absence est un piege documente :
+        # `docker system prune -a` ne touche JAMAIS aux volumes sans ce drapeau.
+        run: |
+          exec 9>"$HOME/.ci-build.lock"
+          flock -w 1800 9 || { echo "  verrou non obtenu, elagage saute"; exit 0; }
+          docker builder prune -af >/dev/null 2>&1 || true
+          docker system prune -af --volumes >/dev/null 2>&1 || true
+          df -h / | awk 'NR==2{print "  disque apres elagage : " $4 " libres (" $5 " utilises)"}' \
+            >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Rappeler que rien n'est deploye
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<FIN
+
+          ## Cette image n'est pas deployee
+
+          Reprendre le tag dans \`homelab-infra\`, qui exige un commit signe :
+
+              sed -i '' "s|$IMAGE:main-[0-9a-f]*|$IMAGE:main-$GITHUB_SHA|" \\
+                kubernetes/prod/therapeutelarochelle/deployment.yaml
+              git commit -S -am "..." && git push
+          FIN
