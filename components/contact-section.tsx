@@ -300,6 +300,8 @@ export function ContactSection() {
       bodyFormData.append("message", formState.message);
       // Format availability for email
       bodyFormData.append("availability", formatAvailabilityForEmail(formState.availability));
+      // Contact Form 7 >= 5.8 rejects a REST submission without a unit tag (HTTP 400, no mail sent).
+      bodyFormData.append("_wpcf7_unit_tag", "wpcf7-f128-o1");
       await axios({
         method: "post",
         url: "https://administration.therapeutelarochelle.fr/wp-json/contact-form-7/v1/contact-forms/128/feedback",
