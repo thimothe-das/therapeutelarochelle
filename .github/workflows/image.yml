@@ -43,6 +43,10 @@ jobs:
     # d'un job a l'autre : plus de verrou `flock` ni d'elagage, qu'exigeait le
     # LXC commun du CT 106.
     runs-on: ci-docker
+    # 30 MIN, SUR LA MESURE : sur le CT 106 (du 02 au 09/10), 3 passages, au plus 5,7 min,
+    # attente du verrou comprise. Sans delai, un job bloque tiendrait 6 h le
+    # seul runner `ci-docker` de ce depot (homelab-infra#19).
+    timeout-minutes: 30
     env:
       IMAGE: therapeutelarochelle
 
