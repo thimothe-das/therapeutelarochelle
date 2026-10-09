@@ -1,0 +1,6 @@
+# L'etiquette de runner auto-heberge, sans laquelle actionlint la prend pour
+# une faute de frappe :
+#   ci-docker          les scale sets du labo, Docker dans une micro-VM
+#                      (image.yml, homelab-infra#19).
+self-hosted-runner:
+  labels: [ci-docker]
