@@ -38,7 +38,15 @@ permissions:
 
 jobs:
   construire:
-    runs-on: [self-hosted, dascan-homelab]
+    # Sur le labo, dans la micro-VM d'un runner `ci-docker` : un demon Docker
+    # neuf par job, detruit ensuite (homelab-infra#19). Rien n'est partage
+    # d'un job a l'autre : plus de verrou `flock` ni d'elagage, qu'exigeait le
+    # LXC commun du CT 106.
+    runs-on: ci-docker
+    # 30 MIN, SUR LA MESURE : sur le CT 106 (du 02 au 09/10), 3 passages, au plus 5,7 min,
+    # attente du verrou comprise. Sans delai, un job bloque tiendrait 6 h le
+    # seul runner `ci-docker` de ce depot (homelab-infra#19).
+    timeout-minutes: 30
     env:
       IMAGE: therapeutelarochelle
 
@@ -66,20 +74,6 @@ jobs:
           set -euo pipefail
           [ -n "$NEXT_PUBLIC_API_URL" ] || {
             echo "::error::variable de depot NEXT_PUBLIC_API_URL absente"; exit 1; }
-
-          # ⚠ LE VERROU SE PREND ICI ET NULLE PART AILLEURS.
-          #
-          # Cinq runners partagent ce conteneur LXC et donc `$HOME`. Un `flock`
-          # sur un fichier de ce repertoire les serialise : sans lui, deux
-          # constructions Next se sont deja disputees le meme hyperviseur
-          # jusqu'a le faire tomber (2026-09-13).
-          #
-          # `exec 9>` ET PAS `flock … commande` : un descripteur ouvert dans le
-          # shell de l'etape se relache quand ce shell se termine, donc a la fin
-          # de l'etape. Une premiere version avait pose le verrou dans une etape
-          # qui se terminait aussitot : il ne protegeait rien.
-          exec 9>"$HOME/.ci-build.lock"
-          flock -w 3600 9 || { echo "::error::verrou non obtenu en 1 h"; exit 1; }
 
           # BUILDKIT ACTIF ICI, CONTRAIREMENT AUX DEUX SITES PAYLOAD.
           # Ceux-la doivent le desactiver parce qu'ils ont besoin d'un
@@ -114,8 +108,8 @@ jobs:
         # 500 passe le job mais se voit, et dit ou regarder.
         #
         # ⚠ AUCUN PORT PUBLIE. Une version antérieure de ces workflows faisait
-        # `-p 39000:3000` et interrogeait `127.0.0.1`. Cinq runners partagent
-        # cette machine : le 2026-09-14, deux jobs ont tourne en meme temps et
+        # `-p 39000:3000` et interrogeait `127.0.0.1`. Cinq runners partageaient
+        # alors le CT 106 : le 2026-09-14, deux jobs ont tourne en meme temps et
         # le second est mort sur
         #   Bind for 0.0.0.0:39000 failed: port is already allocated
         # alors que son image etait parfaitement construite. On interroge donc
@@ -150,29 +144,12 @@ jobs:
 
       - name: Nettoyer
         if: always()
-        # `-v` : sans lui les volumes anonymes d'un conteneur s'accumulent a
-        # chaque run. Ce site n'en declare aucun aujourd'hui, mais le nettoyage
-        # ne doit pas dependre de ce que l'image declarera demain.
+        # `-v` : sans lui les volumes anonymes d'un conteneur s'accumulaient a
+        # chaque run sur le CT 106, dont le demon Docker survivait aux jobs.
+        # Ce site n'en declare aucun aujourd'hui, mais le nettoyage ne doit pas
+        # dependre de ce que l'image declarera demain. Le demon d'un runner
+        # `ci-docker` meurt avec la micro-VM du job : l'etape reste, inoffensive.
         run: docker rm -fv "site-$GITHUB_RUN_ID" >/dev/null 2>&1 || true
-
-      - name: Elaguer ce que la construction a laisse
-        if: always()
-        # ⚠ L'ELAGAGE PREND LE MEME VERROU QUE LA CONSTRUCTION. Le 2026-09-14,
-        # l'elagage d'un depot s'est lance pendant qu'un autre exportait encore
-        # ses couches :
-        #   failed to export layer: CreateDiff: mount callback failed
-        # Le disque etait a 37 % : ce n'etait pas une question de place, mais de
-        # simultaneite.
-        #
-        # `--volumes` est necessaire et son absence est un piege documente :
-        # `docker system prune -a` ne touche JAMAIS aux volumes sans ce drapeau.
-        run: |
-          exec 9>"$HOME/.ci-build.lock"
-          flock -w 1800 9 || { echo "  verrou non obtenu, elagage saute"; exit 0; }
-          docker builder prune -af >/dev/null 2>&1 || true
-          docker system prune -af --volumes >/dev/null 2>&1 || true
-          df -h / | awk 'NR==2{print "  disque apres elagage : " $4 " libres (" $5 " utilises)"}' \
-            >> "$GITHUB_STEP_SUMMARY"
 
       - name: Rappeler que rien n'est deploye
         run: |
