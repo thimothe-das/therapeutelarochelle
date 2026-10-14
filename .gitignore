@@ -30,7 +30,10 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files : les valeurs vivent dans le Secret chiffre du cluster (homelab-infra),
+# jamais ici. Un .env suivi a publie REVALIDATE_SECRET_KEY de 2025 a 2026.
+.env*
+!.env.example
 
 # vercel
 .vercel
