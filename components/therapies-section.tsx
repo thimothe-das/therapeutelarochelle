@@ -64,7 +64,7 @@ export function TherapiesSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {data.acf.liste_des_therapies_proposees.map(
-            (therapy: any, index: number) => (
+            (therapy: TherapyApproach, index: number) => (
               <React.Fragment key={index}>
                 <TherapyCard
                   key={index}
@@ -118,7 +118,7 @@ export function TherapiesSection() {
 
                     {selectedTherapy.therapy_elements.quote && (
                       <div className="bg-teal-50 p-5 rounded-lg border-l-4 border-teal-400 italic text-sm text-gray-700">
-                        "{selectedTherapy.therapy_elements.quote}"
+                        &quot;{selectedTherapy.therapy_elements.quote}&quot;
                         {selectedTherapy.therapy_elements.quoteAuthor && (
                           <div className="mt-2 text-xs text-gray-500 not-italic">
                             — {selectedTherapy.therapy_elements.quoteAuthor}

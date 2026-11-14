@@ -1,0 +1,72 @@
+# Le lint du site, sur chaque PR et chaque poussee sur main (#4).
+#
+# ===========================================================================
+# POURQUOI CE FICHIER EXISTE
+# ===========================================================================
+# `pnpm lint` est reste rouge des mois sans que personne le voie : aucun
+# workflow ne le lancait, et `next.config.ts` porte `eslint.ignoreDuringBuilds`,
+# donc la construction de l'image ne le lance pas non plus. Un lint que rien ne
+# rejoue redevient rouge en silence, et une erreur nouvelle s'y noie dans les
+# anciennes.
+#
+# ===========================================================================
+# LE NOM DU FICHIER ET CELUI DU JOB NE SONT PAS LIBRES
+# ===========================================================================
+# Le kit (`devkit.collect`) lit les runs de `tests.yml` sur `main`, en dur, et
+# cherche un job dont le NOM contient « lint ». Renommer l'un ou l'autre rend ce
+# lint invisible au kit, alors qu'il tourne. Aucun autre job ne doit porter la
+# sous-chaine « lint ».
+#
+# ===========================================================================
+# POURQUOI `ubuntu-latest`, ET PAS LE RUNNER `ci-docker` DU LABO
+# ===========================================================================
+# - Le depot est PUBLIC : les runners heberges par GitHub n'y coutent rien. La
+#   regle « pas de GitHub payant » (homelab-infra, ADR du 2026-10-09) vise les
+#   depots prives, ou ces minutes se paient.
+# - Ce job declenche aussi sur `pull_request`. Dans un depot public, une PR peut
+#   venir d'une fourche, donc d'un code que personne n'a relu ; sur un runner
+#   auto-heberge, il tournerait sur une machine du parc, ce que GitHub
+#   deconseille.
+# - Le lint est leger et sans Docker. Le seul runner `ci-docker` de ce depot
+#   reste aux constructions d'images (`image.yml`) : la mise en prod n'attend
+#   pas derriere un lint.
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Deux poussees rapprochees sur une meme PR : la seconde annule la premiere.
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      # Sans `version`, l'action lit `packageManager` dans package.json
+      # (pnpm 10.10.0) : la meme version que le Dockerfile, par corepack.
+      - uses: pnpm/action-setup@v4
+
+      # Node 22, celui de l'image (`node:22-alpine` dans le Dockerfile).
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # La CLI ESLint (`eslint .`), pas `next lint`, deprecie depuis Next 15.5
+      # et retire en Next 16. Les avertissements ne font pas echouer le job ;
+      # une erreur, si.
+      - run: pnpm lint

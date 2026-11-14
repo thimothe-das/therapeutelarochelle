@@ -5,6 +5,12 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 import useSWR from "swr";
 
+// A link of the WordPress "footer" page (ACF fields), as the REST API returns it.
+interface AcfFooterLine {
+  text: string;
+  link: string;
+}
+
 export function SiteFooter() {
   const { data, error } = useSWR(
     `${process.env.NEXT_PUBLIC_API_URL}/pages?slug=footer`,
@@ -42,7 +48,7 @@ export function SiteFooter() {
               {data?.acf.middle.title}
             </h3>
             <ul className="space-y-2">
-              {data?.acf.middle.lines.map((line: any, index: number) => (
+              {data?.acf.middle.lines.map((line: AcfFooterLine, index: number) => (
                 <li key={index}>
                   <Link
                     href={line.link}
@@ -60,7 +66,7 @@ export function SiteFooter() {
               {data?.acf.right.title}
             </h3>
             <ul className="space-y-2">
-              {data?.acf.right.lines.map((line: any, index: number) => (
+              {data?.acf.right.lines.map((line: AcfFooterLine, index: number) => (
                 <li key={index}>
                   <Link
                     href={line.link}

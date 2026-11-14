@@ -22,6 +22,17 @@ interface Certification {
   link?: string
 }
 
+// A row of the WordPress "mybackground" page (ACF fields), as the REST API returns it.
+interface AcfFormation {
+  title: string
+  subtitle: string
+  date: string
+  description: string
+  logo: { url: string }
+  category: Certification["category"]
+  link: string
+}
+
 export function QualificationsSection() {
   const [selectedCertification, setSelectedCertification] = useState<Certification | null>(null)
   const [activeIndex, setActiveIndex] = useState(0)
@@ -44,7 +55,7 @@ export function QualificationsSection() {
 
   const {data, error} = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/pages?slug=mybackground`, fetcher)
 
-  const certifications: Certification[] = data?.acf.formations.map((formation: any, index: number) => ({
+  const certifications: Certification[] = data?.acf.formations.map((formation: AcfFormation, index: number) => ({
     id: index,
     name: formation.title,
     institution: formation.subtitle,
@@ -235,7 +246,7 @@ export function QualificationsSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            "{data?.acf.citation}"
+            &quot;{data?.acf.citation}&quot;
           </motion.p>
           {data?.acf.end_button_link && <motion.div
             initial={{ opacity: 0, y: 20 }}
