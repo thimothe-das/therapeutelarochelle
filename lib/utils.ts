@@ -11,7 +11,7 @@ export async function getPosts(slug: string) {
   return post[0]
 }
 
-export  const fetcher = (...args: any[]) => fetch(...args).then(res => {
+export  const fetcher = (...args: Parameters<typeof fetch>) => fetch(...args).then(res => {
   const data = res.json().then(data => {
     return data[0]
   })

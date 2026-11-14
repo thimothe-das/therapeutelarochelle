@@ -23,11 +23,11 @@ export default async function OfficePage() {
               <h2 className="text-3xl font-bold mb-6 text-gray-800">Informations pratiques</h2>
               <div className="prose prose-lg max-w-none mb-8">
                 <p>
-                  J'exerce désormais uniquement à Châtelaillon-Plage au 14 rue du Château d'Alon (mon cabinet de La
+                  J&apos;exerce désormais uniquement à Châtelaillon-Plage au 14 rue du Château d&apos;Alon (mon cabinet de La
                   Rochelle est désormais fermé).
                 </p>
                 <p>
-                  N'ayant pas de salle d'attente, merci de venir à l'heure précise de votre rendez-vous et de sonner
+                  N&apos;ayant pas de salle d&apos;attente, merci de venir à l&apos;heure précise de votre rendez-vous et de sonner
                   (sonnette sur rue). Je viendrai vous accueillir.
                 </p>
               </div>
@@ -37,7 +37,7 @@ export default async function OfficePage() {
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center gap-3">
                     <MapPin className="text-teal-600 h-5 w-5 flex-shrink-0" />
-                    <span className="text-gray-700">14 rue du Château d'Alon, Châtelaillon-Plage</span>
+                    <span className="text-gray-700">14 rue du Château d&apos;Alon, Châtelaillon-Plage</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Phone className="text-teal-600 h-5 w-5 flex-shrink-0" />

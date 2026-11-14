@@ -24,7 +24,7 @@ export default async function AboutPage() {
           <div className="prose prose-lg max-w-none">
             <p>
               Nous pouvons tdddddous un jour être confrontés à des problèmes voire à des traumatismes qui nous submergent,
-              nous font souffrir. Qu'ils soient récents, répétitifs ou plus enfouis. La démarche d'aller consulter un
+              nous font souffrir. Qu&apos;ils soient récents, répétitifs ou plus enfouis. La démarche d&apos;aller consulter un
               thérapeute, pour soi, son couple ou son enfant devient alors nécessaire et fait de plus en plus partie de
               notre quotidien.
             </p>
@@ -32,7 +32,7 @@ export default async function AboutPage() {
             <p>
               Je reçois en face à face, en cabinet en toute confidentialité, les adultes, les couples, les ados, les
               enfants. Le premier entretien permettra de cerner ensemble la problématique rencontrée et de définir vos
-              attentes, vos objectifs et les modalités d'intervention.
+              attentes, vos objectifs et les modalités d&apos;intervention.
             </p>
 
             <p>
@@ -66,12 +66,12 @@ export default async function AboutPage() {
                     années 2020 et après.
                   </li>
                   <li>
-                    Précédemment je me suis formé à l'<strong className="text-teal-700">ICV</strong>, approche pour
-                    laquelle je suis agréé par l'<strong className="text-teal-700">AFICV</strong>.
+                    Précédemment je me suis formé à l&apos;<strong className="text-teal-700">ICV</strong>, approche pour
+                    laquelle je suis agréé par l&apos;<strong className="text-teal-700">AFICV</strong>.
                   </li>
                   <li>
-                    L'<strong className="text-teal-700">EMDR</strong> est recommandée en France par la Haute Autorité de
-                    Santé et par l'Institut national de la santé et de la recherche médicale (INSERM).
+                    L&apos;<strong className="text-teal-700">EMDR</strong> est recommandée en France par la Haute Autorité de
+                    Santé et par l&apos;Institut national de la santé et de la recherche médicale (INSERM).
                   </li>
                   <li>
                     La <strong className="text-teal-700">Thérapie des Schémas</strong> a été elle aussi reconnue
@@ -85,7 +85,7 @@ export default async function AboutPage() {
             <p>
               Commencer une thérapie du trauma est une chance pour le client mais aussi un défi en vue de sa stabilité
               fragile. Tift travaille dans la zone de confort du client avec une exposition minimale aux traumatismes,
-              permettant ainsi l'intégration et créant un sentiment de sécurité.
+              permettant ainsi l&apos;intégration et créant un sentiment de sécurité.
             </p>
             <p>
               La prise en compte de la structure de survie actuelle du client est une reconnaissance des efforts, des
@@ -95,21 +95,21 @@ export default async function AboutPage() {
 
             <h3 className="text-xl font-semibold mb-4 text-gray-800">ICV-LI (Intégration du Cycle de Vie)</h3>
             <p>
-              L'Intégration du Cycle de Vie est une thérapie qui a débuté dans les années 2000. C'est une psychothérapie
-              psycho-corporelle qui s'appuie sur les neurosciences, la théorie de l'attachement, l'anxiété et les
+              L&apos;Intégration du Cycle de Vie est une thérapie qui a débuté dans les années 2000. C&apos;est une psychothérapie
+              psycho-corporelle qui s&apos;appuie sur les neurosciences, la théorie de l&apos;attachement, l&apos;anxiété et les
               traumatismes.
             </p>
             <p>
-              Lorsqu'un événement trop difficile ne peut être assimilé, il est déconnecté des autres réseaux neuronaux
-              et n'est pas vécu comme passé lorsque l'on se le remémore.
+              Lorsqu&apos;un événement trop difficile ne peut être assimilé, il est déconnecté des autres réseaux neuronaux
+              et n&apos;est pas vécu comme passé lorsque l&apos;on se le remémore.
             </p>
-            <p>L'ICV permet d'apaiser nombre de problématiques et de se reconnecter à un sentiment de sécurité.</p>
+            <p>L&apos;ICV permet d&apos;apaiser nombre de problématiques et de se reconnecter à un sentiment de sécurité.</p>
 
             <h3 className="text-xl font-semibold mb-4 text-gray-800">EMDR</h3>
             <p>
-              L'EMDR est recommandée en France par la Haute Autorité de Santé et par l'Institut national de la santé et
-              de la recherche médicale (INSERM) ainsi que par l'Organisation Mondiale de la Santé (OMS). L'EMDR permet
-              d'apaiser et de retraiter les traumatismes.
+              L&apos;EMDR est recommandée en France par la Haute Autorité de Santé et par l&apos;Institut national de la santé et
+              de la recherche médicale (INSERM) ainsi que par l&apos;Organisation Mondiale de la Santé (OMS). L&apos;EMDR permet
+              d&apos;apaiser et de retraiter les traumatismes.
             </p>
 
             <h3 className="text-xl font-semibold mb-4 text-gray-800">Thérapie des Schémas</h3>
@@ -121,13 +121,13 @@ export default async function AboutPage() {
             </p>
 
             <p>
-              Ces approches thérapeutiques sont utilisées aujourd'hui par de nombreux psychologues, psychopraticiens ou
+              Ces approches thérapeutiques sont utilisées aujourd&apos;hui par de nombreux psychologues, psychopraticiens ou
               thérapeutes.
             </p>
             <p>
               Elles peuvent être proposées à des adultes, des ados ou des enfants confrontés par exemple à des souvenirs
               traumatiques récents ou plus anciens (accident, agression, décès, maltraitance, humiliation ou négligence
-              durant l'enfance, l'adolescence ou l'âge adulte).
+              durant l&apos;enfance, l&apos;adolescence ou l&apos;âge adulte).
             </p>
           </div>
 

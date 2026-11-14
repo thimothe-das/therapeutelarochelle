@@ -57,17 +57,28 @@ interface FormErrors {
   availability?: string
 }
 
+// Rows of the WordPress "contact" page (ACF fields), as the REST API returns them.
+interface AcfHour {
+  hour: string
+  active: boolean
+}
+
+interface AcfDay {
+  day: string
+  active: boolean
+}
+
 export function ContactSection() {
   const {data, error} = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/pages?slug=contact`, fetcher)
 
-  const timeSlots: TimeSlot[] = data?.acf.availabilities_hours.map((hour: any) => ({
+  const timeSlots: TimeSlot[] = data?.acf.availabilities_hours.map((hour: AcfHour) => ({
     id: hour.hour,
     label: hour.hour,
     active: hour.active
   }))
   
   const days = data?.acf.days
-  const initialAvailability: DayAvailability[] =  days?.map((day: any) => ({
+  const initialAvailability: DayAvailability[] =  days?.map((day: AcfDay) => ({
     day: day.day,
     dayLabel: day.day,
     active: day.active,
@@ -292,7 +303,7 @@ export function ContactSection() {
     setIsSubmitting(true)
     
     try {
-      var bodyFormData = new FormData();
+      const bodyFormData = new FormData();
       bodyFormData.append("first_name", formState.firstName);
       bodyFormData.append("last_name", formState.lastName);
       bodyFormData.append("email", formState.email);
@@ -961,7 +972,7 @@ export function ContactSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <div className="absolute -top-10 -left-10 text-teal-400 opacity-20 text-9xl">"</div>
+              <div className="absolute -top-10 -left-10 text-teal-400 opacity-20 text-9xl">&quot;</div>
               <div className="relative z-10">
                 <p className="italic mb-6 text-lg">
                   {data?.acf.citation}

@@ -6,13 +6,29 @@ import { Button } from "@/components/ui/button";
 import { cn, fetcher } from "@/lib/utils";
 import useSWR from "swr";
 
+// A card of the WordPress "pricing" page (ACF fields), as the REST API returns it.
+interface AcfPricingCard {
+  title: string;
+  subtitle: string;
+  price: string;
+  isPopular: boolean;
+  action_button: string;
+  cta_url: string;
+  lines?: AcfPricingLine[];
+  features?: unknown;
+}
+
+interface AcfPricingLine {
+  text: string;
+}
+
 export function HomePricingSection() {
   const { data, error } = useSWR(
     `${process.env.NEXT_PUBLIC_API_URL}/pages?slug=pricing`,
     fetcher
   );
 
-  const pricingPlans = data?.acf.cards?.map((plan: any) => ({
+  const pricingPlans = data?.acf.cards?.map((plan: AcfPricingCard) => ({
     name: plan.title,
     price: plan.price,
     description: plan.subtitle,
@@ -68,7 +84,7 @@ export function HomePricingSection() {
                 </div>
                 <ul className="mt-4 space-y-2">
                   {plan?.lines &&
-                    plan?.lines?.map((line: any) => (
+                    plan?.lines?.map((line: AcfPricingLine) => (
                       <li key={line.text} className="flex items-start gap-2">
                         <Check className="h-4 w-4 flex-shrink-0 text-teal-500 mt-0.5" />
                         <span className="text-sm text-gray-700">
