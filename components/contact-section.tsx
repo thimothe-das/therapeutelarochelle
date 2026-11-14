@@ -302,12 +302,19 @@ export function ContactSection() {
       bodyFormData.append("availability", formatAvailabilityForEmail(formState.availability));
       // Contact Form 7 >= 5.8 rejects a REST submission without a unit tag (HTTP 400, no mail sent).
       bodyFormData.append("_wpcf7_unit_tag", "wpcf7-f128-o1");
-      await axios({
+      const response = await axios({
         method: "post",
         url: "https://administration.therapeutelarochelle.fr/wp-json/contact-form-7/v1/contact-forms/128/feedback",
         data: bodyFormData,
         headers: { "Content-Type": "multipart/form-data" },
       });
+
+      // Contact Form 7 answers HTTP 200 even when no mail left (mail_failed,
+      // validation_failed, spam, aborted…): only `status: "mail_sent"` proves
+      // the request reached the therapist (#2).
+      if (response.data?.status !== "mail_sent") {
+        throw new Error(`Contact Form 7: ${response.data?.status ?? "no status in the response"}`)
+      }
 
       // Success
       setSubmitStatus("success")
@@ -455,9 +462,10 @@ export function ContactSection() {
                 >
                   <AlertCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
                 </motion.div>
-                <h4 className="text-2xl font-medium text-red-800 mb-3">Une erreur est survenue</h4>
+                <h4 className="text-2xl font-medium text-red-800 mb-3">Votre message n’a pas été envoyé</h4>
                 <p className="text-red-700 mb-6">
-                  Veuillez réessayer ou me contacter directement par téléphone au 06 86 38 45 23.
+                  Votre demande ne m’est pas parvenue. Veuillez réessayer, ou me contacter directement par téléphone
+                  {data?.acf.contact_infos?.phone?.subtitle ? ` au ${data.acf.contact_infos.phone.subtitle}` : ""}.
                 </p>
                 <Button onClick={() => setSubmitStatus("idle")} className="bg-red-600 hover:bg-red-700 text-white">
                   Réessayer
