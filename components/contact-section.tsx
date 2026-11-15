@@ -392,11 +392,6 @@ export function ContactSection() {
       ref={sectionRef}
       className="py-24 relative overflow-hidden"
       id="contact"
-      style={{
-        backgroundImage: "url('/serene-teal-flow.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
     >
       {/* Overlay */}
       <div className="absolute inset-0 bg-white/90 backdrop-blur-sm"></div>
