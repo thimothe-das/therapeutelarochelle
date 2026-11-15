@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { motion, AnimatePresence, useInView, useAnimation } from "framer-motion"
+import { motion, AnimatePresence, useInView, useAnimation } from "motion/react"
 import { Calendar, Award, BookOpen, GraduationCap, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
