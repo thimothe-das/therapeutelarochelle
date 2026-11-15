@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState, useRef, useEffect } from "react"
-import { motion, useInView, AnimatePresence } from "framer-motion"
+import { motion, useInView, AnimatePresence } from "motion/react"
 import {
   MapPin,
   Phone,
